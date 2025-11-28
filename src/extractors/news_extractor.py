@@ -23,7 +23,7 @@ Columns:
 
 import argparse
 import os
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import List, Dict
 from pathlib import Path
 import html
@@ -184,7 +184,7 @@ def fetch_news_for_ticker(ticker: str, window: str) -> List[Dict]:
                 "url": url_text,
                 "source": "google_news",
                 "window": window,
-                "fetched_at": datetime.now(datetime.timezone.utc).isoformat(),
+                "fetched_at": datetime.now(timezone.utc).isoformat(),
             }
         )
 
@@ -211,7 +211,7 @@ def run_news_extractor(tickers: List[str], window: str) -> Path | None:
     output_dir = BASE_OUTPUT_DIR / "news"
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    ts = datetime.now(datetime.timezone.utc).strftime("%Y%m%d_%H%M%S")
+    ts = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
     output_path = output_dir / f"news_{window}_{ts}.csv"
 
     print(f"Writing {len(df)} rows → {output_path}")
