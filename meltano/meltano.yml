@@ -1,0 +1,46 @@
+default_environment: dev
+project_id: 019ac4b2-4b53-7385-ad12-2c7e5fc37786
+
+environments:
+- name: dev
+- name: staging
+- name: prod
+
+plugins:
+
+  extractors:
+  - name: tap-csv
+    variant: meltanolabs
+    pip_url: git+https://github.com/MeltanoLabs/tap-csv.git
+    config:
+        files:
+          - entity: stock_prices
+            path: "../data/stocks/"
+            keys: ["ticker", "date"]
+            delimiter: ","
+            header: true
+          - entity: news_headlines
+            path: "../data/news/"
+            keys: ["ticker", "timestamp"]
+            delimiter: ","
+            header: true
+
+  loaders:
+  - name: target-bigquery
+    variant: z3z1ma
+    pip_url: git+https://github.com/z3z1ma/target-bigquery.git
+    config:
+      credentials_path: ${GOOGLE_APPLICATION_CREDENTIALS}
+      dataset: ${BQ_DATASET_RAW}  # default raw dataset for Meltano
+      dedupe_before_upsert: true
+      denormalized: true
+      flattening_enabled: true
+      flattening_max_depth: 1
+      method: batch_job
+      project: ${GCP_PROJECT_ID}
+      upsert: true
+
+jobs:
+  - name: load_csvs
+    tasks:
+      - tap-csv target-bigquery
