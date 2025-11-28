@@ -21,7 +21,7 @@ Env vars:
 
 import argparse
 import os
-from datetime import date, datetime, timedelta
+from datetime import date, datetime, timedelta, timezone
 from typing import List
 from pathlib import Path
 from dotenv import load_dotenv
@@ -148,7 +148,7 @@ def download_prices(
     for col in ["open", "high", "low", "close", "adj_close"]:
         df[col] = pd.to_numeric(df[col], errors="coerce")
 
-    df["fetched_at"] = datetime.now(datetime.timezone.utc).isoformat()
+    df["fetched_at"] = datetime.now(timezone.utc).isoformat()
 
     return df
 
