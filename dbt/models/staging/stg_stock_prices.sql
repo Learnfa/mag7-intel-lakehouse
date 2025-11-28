@@ -1,6 +1,6 @@
 {{ config(
     materialized = 'incremental',
-    schema = 'mag7_intel_staging',
+    schema = 'staging',
     alias = 'stock_prices',
     incremental_strategy = 'merge',
     unique_key = ['ticker', 'trade_date'],
@@ -57,4 +57,4 @@ SELECT
   volume,
   fetched_at
 FROM deduped
-WHERE rn = 1;
+WHERE rn = 1

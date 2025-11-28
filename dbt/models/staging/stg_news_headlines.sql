@@ -1,7 +1,7 @@
 {{ config(
     materialized = 'incremental',
-    schema = 'mag7_intel_staging',
-    alias = 'google_news',
+    schema = 'staging',
+    alias = 'news_headlines',
     incremental_strategy = 'merge',
     unique_key = ['ticker', 'news_ts'],
     partition_by = { 'field': 'news_ts', 'data_type': 'timestamp' },
@@ -11,7 +11,7 @@
 -- 1) Pull from raw, only new or later-fetched rows when incremental
 WITH source_raw AS (
   SELECT *
-  FROM {{ source('raw', 'google_news') }}
+  FROM {{ source('raw', 'news_headlines') }}
   {% if is_incremental() %}
     WHERE TIMESTAMP(fetched_at) >
       (SELECT COALESCE(MAX(fetched_at), TIMESTAMP('2000-01-01'))
@@ -26,7 +26,7 @@ typed AS (
     headline,
     url,
     source,
-    window,
+  --  `window`,
     TIMESTAMP(timestamp)       AS news_ts,
     TIMESTAMP(fetched_at)      AS fetched_at,
     sentiment_label,
@@ -51,9 +51,9 @@ SELECT
   news_ts,
   url,
   source,
-  window,
+--  window,
   fetched_at,
   sentiment_label,
   sentiment_score
 FROM deduped
-WHERE rn = 1;
+WHERE rn = 1

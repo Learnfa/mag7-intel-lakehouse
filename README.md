@@ -243,7 +243,7 @@ This is optional but we can do ahead and create the datasets in BQ:
 ```
 bq --location=US mk --dataset mag7_intel_raw
 bq --location=US mk --dataset mag7_intel_staging
-bq --location=US mk --dataset mag7_intel_mart
+bq --location=US mk --dataset mag7_intel_marts
 bq --location=US mk --dataset mag7_intel_ml
 bq --location=US mk --dataset mag7_intel_pred
 ```
@@ -351,8 +351,22 @@ seeds:
 dbt seed
 ```
 
-### 5.1 staging - type cast & dedup 
+### 5.2 staging 
 
+1. Create source.yml
+
+2. type cast & dedup for news and stocks
+  * create stg_news_headlines.sql
+  * create stg_stock_prices.sql
+  * run & test
+    ```
+    dbt run
+    dbt test
+    ```
+
+3. pull in GDELT & Google Trends from pub data
+
+4. ?
 
 # 🤖 6. Running Dagger Pipeline
 

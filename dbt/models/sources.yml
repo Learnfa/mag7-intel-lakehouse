@@ -1,17 +1,18 @@
 version: 2
 
 sources:
-
+# raw datasets (stock prices, news headlines) ingested into our GCP project via Meltano
   - name: raw
     database: "{{ env_var('GCP_PROJECT_ID') }}"
-#    schema: mag7_intel_raw
     schema: "{{ env_var('BQ_DATASET_RAW') }}"
     tables:
       - name: stock_prices
-      - name: google_news
+      - name: news_headlines
 
-  - name: public_gdelt
-    database: gdelt-bq
+# public datasets (GDELT)
+  - name: gdeltv2
+    database: gdelt-bq            # GCP project that hosts GDELT
     schema: gdeltv2
     tables:
+      - name: gkg_partitioned
       - name: events
