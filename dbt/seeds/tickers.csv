@@ -1,8 +1,0 @@
-ticker,company_name,sector,industry,exchange,is_active
-AAPL,Apple Inc.,Technology,Consumer Electronics,NASDAQ,1
-MSFT,Microsoft Corporation,Technology,Software—Infrastructure,NASDAQ,1
-GOOGL,Alphabet Inc. Class A,Communication Services,Internet Content & Information,NASDAQ,1
-AMZN,"Amazon.com, Inc.",Consumer Discretionary,Internet Retail,NASDAQ,1
-META,"Meta Platforms, Inc.",Communication Services,Internet Content & Information,NASDAQ,1
-TSLA,"Tesla, Inc.",Consumer Discretionary,Auto Manufacturers,NASDAQ,1
-NVDA,NVIDIA Corporation,Technology,Semiconductors,NASDAQ,1
