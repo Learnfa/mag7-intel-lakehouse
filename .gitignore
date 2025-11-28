@@ -1,0 +1,109 @@
+########################################
+# PYTHON
+########################################
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pdb
+.env
+.venv/
+venv/
+env/
+*.egg-info/
+*.egg
+*.log
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_convert
+*.ipynb_tmp
+
+# PyCharm / VSCode
+.idea/
+.vscode/
+*.code-workspace
+
+########################################
+# ENVIRONMENT & CREDENTIALS
+########################################
+# DO NOT commit real credentials
+.env
+.env.*
+*.key
+*.pem
+*.p12
+*.json
+# (But may commit .env.example)
+!*.example
+
+# GCP service account keys
+**/service-account.json
+**/*service-account*.json
+
+########################################
+# DBT ARTIFACTS
+########################################
+dbt/target/
+dbt/dbt_packages/
+dbt/.user.yml
+
+########################################
+# MELTANO
+########################################
+.meltano/
+.meltano_cache/
+*.lock
+*.meltano.lock
+
+########################################
+# DAGGER
+########################################
+# Dagger engine & temp files
+.dagger/
+dagger-engine/
+dagger-cache/
+*dagger*.log
+
+########################################
+# STREAMLIT
+########################################
+.streamlit/secrets.toml
+
+########################################
+# CACHE / TEMP
+########################################
+*.tmp
+*.temp
+tmp/
+temp/
+logs/
+.cache/
+.cache-*
+**/cache/
+__snapshots__/
+.donotgit/
+
+########################################
+# OS / EDITOR JUNK
+########################################
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+########################################
+# BUILD / DIST
+########################################
+build/
+dist/
+*.whl
+*.tar.gz
+
+########################################
+# LOCAL DATA (OPTIONAL)
+########################################
+# If you store temporary downloads locally
+# data/
+downloads/
+raw_data/

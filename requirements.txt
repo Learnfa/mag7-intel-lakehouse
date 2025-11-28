@@ -1,0 +1,69 @@
+# ===============================
+# Core Python Utilities
+# ===============================
+python-dotenv>=1.0.0
+pydantic>=2.0
+
+# ===============================
+# Data Extraction & Ingestion
+# ===============================
+beautifulsoup4>=4.12
+numpy>=1.23
+pandas>=2.0
+requests>=2.31
+snscrape>=0.7.0    # Reddit/Twitter scraping
+torch>=2.9.0
+transformers>=4.57.0
+yfinance>=0.2.36
+
+# ===============================
+# Google Cloud – BigQuery & Storage
+# ===============================
+google-cloud-bigquery>=3.12
+google-cloud-storage>=2.14
+google-auth>=2.23
+# google-auth-oauthlib>=1.2
+
+# ===============================
+# dbt (BigQuery)
+# ===============================
+dbt-core>=1.7
+dbt-bigquery>=1.7
+
+# ===============================
+# Meltano
+# ===============================
+meltano>=3.4
+
+# ===============================
+# Dagger (Orchestration)
+# ===============================
+dagger-io>=0.10
+
+# ===============================
+# Dashboard / Visualization
+# ===============================
+streamlit>=1.30
+altair>=5.0
+plotly>=5.18
+
+# ===============================
+# ML (Phase 2)
+# ===============================
+# scikit-learn>=1.4
+# xgboost>=2.0
+# lightgbm>=4.3
+# shap>=0.44
+
+# ===============================
+# Utils / Logging
+# ===============================
+tenacity>=8.2
+loguru>=0.7
+tqdm>=4.66
+
+# ===============================
+# Notebook Support
+# ===============================
+jupyterlab>=4.0
+ipykernel>=6.29
