@@ -12,6 +12,7 @@
     tags = ["staging", "gdelt", "mag7"]
 ) }}
 
+-- 1) Pull from BQ pub data
 WITH gkg AS (
   SELECT
     GKGRECORDID AS gkg_record_id,
@@ -24,7 +25,7 @@ WITH gkg AS (
   FROM {{ source('gdeltv2', 'gkg_partitioned') }}
   WHERE DATE IS NOT NULL
 
-  -- ✅ Only scan recent partitions (tune this as you like)
+  -- ✅ Only scan recent partitions
   AND DATE(_PARTITIONTIME) >= DATE_SUB(CURRENT_DATE(), INTERVAL 730 DAY)
 
   {% if is_incremental() %}

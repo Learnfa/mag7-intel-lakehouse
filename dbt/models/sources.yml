@@ -1,7 +1,7 @@
 version: 2
 
 sources:
-# raw datasets (stock prices, news headlines) ingested into our GCP project via Meltano
+# 1. Raw datasets (stock prices, news headlines) ingested into our GCP project via Meltano
   - name: raw
     database: "{{ env_var('GCP_PROJECT_ID') }}"
     schema: "{{ env_var('BQ_DATASET_RAW') }}"
@@ -9,10 +9,20 @@ sources:
       - name: stock_prices_all
       - name: news_headlines
 
-# public datasets (GDELT)
+# 2. BQ public datasets (GDELT gkg)
   - name: gdeltv2
     database: gdelt-bq            # GCP project that hosts GDELT
     schema: gdeltv2
     tables:
       - name: gkg_partitioned
       - name: events
+
+  # 3. Staging Dataset (typed & cleaned staging tables)
+  - name: staging
+    database: "{{ env_var('GCP_PROJECT_ID') }}"
+    schema: "{{ env_var('BQ_DATASET_STAGING') }}"
+    tables:
+      - name: stock_prices_mag7
+      - name: stock_prices_vix
+      - name: news_gkg
+      - name: news_headlines

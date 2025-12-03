@@ -50,4 +50,4 @@ USER appuser
 EXPOSE 3000
 
 # Default CMD — overridden by docker-compose
-CMD ["dagster-webserver", "-h", "0.0.0.0", "-p", "3000", "-w", "workspace.yaml"]
+CMD ["dagster-webserver", "-h", "0.0.0.0", "-p", "3000", "-w", "worksplace.yaml"]
