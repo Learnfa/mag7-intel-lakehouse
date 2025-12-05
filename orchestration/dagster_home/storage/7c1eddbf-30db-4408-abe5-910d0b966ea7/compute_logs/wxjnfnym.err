@@ -1,0 +1,33 @@
+2025-12-04 15:30:30 +0000 - dagster - DEBUG - mag7_intel_daily_job - 7c1eddbf-30db-4408-abe5-910d0b966ea7 - 1130 - LOGS_CAPTURED - Started capturing logs in process (pid: 1130).
+2025-12-04 15:30:30 +0000 - dagster - DEBUG - mag7_intel_daily_job - 7c1eddbf-30db-4408-abe5-910d0b966ea7 - 1130 - news_csv - STEP_START - Started execution of step "news_csv".
+2025-12-04 15:30:53 +0000 - dagster - INFO - mag7_intel_daily_job - 7c1eddbf-30db-4408-abe5-910d0b966ea7 - news_csv - Running news extractor for tickers=['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'META', 'TSLA', 'NVDA'], window=1d
+2025-12-04 15:30:54 +0000 - dagster - ERROR - mag7_intel_daily_job - 7c1eddbf-30db-4408-abe5-910d0b966ea7 - 1130 - news_csv - STEP_FAILURE - Execution of step "news_csv" failed.
+
+dagster._core.errors.DagsterExecutionStepExecutionError: Error occurred while executing op "news_csv"::
+
+bs4.exceptions.FeatureNotFound: Couldn't find a tree builder with the features you requested: xml. Do you need to install a parser library?
+
+Stack Trace:
+  File "/usr/local/lib/python3.11/site-packages/dagster/_core/execution/plan/utils.py", line 57, in op_execution_error_boundary
+    yield
+  File "/usr/local/lib/python3.11/site-packages/dagster/_utils/__init__.py", line 394, in iterate_with_context
+    next_output = next(iterator)
+                  ^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/dagster/_core/execution/plan/compute_generator.py", line 135, in _coerce_op_compute_fn_to_iterator
+    result = invoke_compute_fn(
+             ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/dagster/_core/execution/plan/compute_generator.py", line 115, in invoke_compute_fn
+    return fn(context, **args_to_pass) if context_arg_provided else fn(**args_to_pass)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/orchestration/orchestration/assets.py", line 42, in news_csv
+    csv_path = run_news_extractor(tickers, window)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/src/extractors/news_extractor.py", line 199, in run_news_extractor
+    recs = fetch_news_for_ticker(ticker, window)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/src/extractors/news_extractor.py", line 164, in fetch_news_for_ticker
+    soup = BeautifulSoup(resp.text, "xml")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/bs4/__init__.py", line 366, in __init__
+    raise FeatureNotFound(
+

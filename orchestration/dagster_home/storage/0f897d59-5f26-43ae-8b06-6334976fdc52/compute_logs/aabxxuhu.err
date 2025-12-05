@@ -1,0 +1,32 @@
+2025-12-04 16:59:15 +0000 - dagster - DEBUG - mag7_intel_daily_job - 0f897d59-5f26-43ae-8b06-6334976fdc52 - 37967 - LOGS_CAPTURED - Started capturing logs in process (pid: 37967).
+2025-12-04 16:59:15 +0000 - dagster - DEBUG - mag7_intel_daily_job - 0f897d59-5f26-43ae-8b06-6334976fdc52 - 37967 - stg_stock_prices - STEP_START - Started execution of step "stg_stock_prices".
+2025-12-04 16:59:15 +0000 - dagster - INFO - mag7_intel_daily_job - 0f897d59-5f26-43ae-8b06-6334976fdc52 - stg_stock_prices - Running dbt: stg_stock_prices+
+2025-12-04 16:59:27 +0000 - dagster - INFO - mag7_intel_daily_job - 0f897d59-5f26-43ae-8b06-6334976fdc52 - stg_stock_prices - [0m16:59:18  Running with dbt=1.10.15
+[0m16:59:23  Registered adapter: bigquery=1.10.3
+[0m16:59:25  Encountered an error:
+Parsing Error
+  Failed to render models/sources.yml from project mag7_intel: Parsing Error
+    Env var required but not provided: 'BQ_DATASET_INTERMEDIATE'
+
+2025-12-04 16:59:27 +0000 - dagster - ERROR - mag7_intel_daily_job - 0f897d59-5f26-43ae-8b06-6334976fdc52 - stg_stock_prices
+2025-12-04 16:59:27 +0000 - dagster - ERROR - mag7_intel_daily_job - 0f897d59-5f26-43ae-8b06-6334976fdc52 - 37967 - stg_stock_prices - STEP_FAILURE - Execution of step "stg_stock_prices" failed.
+
+dagster._core.errors.DagsterExecutionStepExecutionError: Error occurred while executing op "stg_stock_prices"::
+
+RuntimeError: dbt run failed with code 2
+
+Stack Trace:
+  File "/usr/local/lib/python3.11/site-packages/dagster/_core/execution/plan/utils.py", line 57, in op_execution_error_boundary
+    yield
+  File "/usr/local/lib/python3.11/site-packages/dagster/_utils/__init__.py", line 394, in iterate_with_context
+    next_output = next(iterator)
+                  ^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/dagster/_core/execution/plan/compute_generator.py", line 135, in _coerce_op_compute_fn_to_iterator
+    result = invoke_compute_fn(
+             ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/dagster/_core/execution/plan/compute_generator.py", line 115, in invoke_compute_fn
+    return fn(context, **args_to_pass) if context_arg_provided else fn(**args_to_pass)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/orchestration/orchestration/assets.py", line 169, in stg_stock_prices
+    raise RuntimeError(f"dbt run failed with code {result.returncode}")
+

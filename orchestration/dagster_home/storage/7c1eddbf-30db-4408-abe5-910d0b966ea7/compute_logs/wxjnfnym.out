@@ -1,0 +1,3 @@
+Loading FinBERT model for financial sentiment...
+Fetching news for AAPL with window=1d:
+  https://news.google.com/rss/search?q=AAPL+stock+when:1d&hl=en-US&gl=US&ceid=US:en

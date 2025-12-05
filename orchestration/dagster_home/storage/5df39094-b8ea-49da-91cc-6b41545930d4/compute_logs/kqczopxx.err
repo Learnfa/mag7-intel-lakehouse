@@ -1,0 +1,53 @@
+2025-12-05 07:13:27 +0000 - dagster - DEBUG - mag7_intel_daily_job - 5df39094-b8ea-49da-91cc-6b41545930d4 - 5974 - LOGS_CAPTURED - Started capturing logs in process (pid: 5974).
+2025-12-05 07:13:27 +0000 - dagster - DEBUG - mag7_intel_daily_job - 5df39094-b8ea-49da-91cc-6b41545930d4 - 5974 - int_stock_prices_enrich - STEP_START - Started execution of step "int_stock_prices_enrich".
+2025-12-05 07:13:27 +0000 - dagster - INFO - mag7_intel_daily_job - 5df39094-b8ea-49da-91cc-6b41545930d4 - int_stock_prices_enrich - Running dbt: int_stock_prices_ta, int_index_benchmark_join
+2025-12-05 07:14:06 +0000 - dagster - INFO - mag7_intel_daily_job - 5df39094-b8ea-49da-91cc-6b41545930d4 - int_stock_prices_enrich - [0m07:13:30  Running with dbt=1.10.15
+[0m07:13:36  Registered adapter: bigquery=1.10.3
+[0m07:13:38  [[33mWARNING[0m]: Configuration paths exist in your dbt_project.yml file which do not apply to any resources.
+There are 1 unused configuration paths:
+- models.mag7_intel.example
+[0m07:13:38  Found 8 models, 2 seeds, 15 data tests, 10 sources, 520 macros
+[0m07:13:38  
+[0m07:13:38  Concurrency: 4 threads (target='dev')
+[0m07:13:38  
+[0m07:13:39  1 of 2 START sql table model mag7_intel_intermediate.stock_prices_mag7_ta ...... [RUN]
+[0m07:14:02  1 of 2 OK created sql table model mag7_intel_intermediate.stock_prices_mag7_ta . [[32mCREATE TABLE (10.4k rows, 996.2 KiB processed)[0m in 23.04s]
+[0m07:14:02  2 of 2 START sql view model mag7_intel_intermediate.index_benchmark_join ....... [RUN]
+[0m07:14:03  BigQuery adapter: https://console.cloud.google.com/bigquery?project=pizza-skxw&j=bq:US:8d1f0af9-692a-485b-aeac-5761a2907d95&page=queryresults
+[0m07:14:03  2 of 2 ERROR creating sql view model mag7_intel_intermediate.index_benchmark_join  [[31mERROR[0m in 0.96s]
+[0m07:14:03  
+[0m07:14:03  Finished running 1 table model, 1 view model in 0 hours 0 minutes and 25.24 seconds (25.24s).
+[0m07:14:03  
+[0m07:14:03  [31mCompleted with 1 error, 0 partial successes, and 0 warnings:[0m
+[0m07:14:03  
+[0m07:14:03  [31mFailure in model int_index_benchmark_join (models/intermediate/int_index_benchmark_join.sql)[0m
+[0m07:14:03    Database Error in model int_index_benchmark_join (models/intermediate/int_index_benchmark_join.sql)
+  Duplicate alias index_ta for WITH subquery at [38:1]
+  compiled code at target/run/mag7_intel/models/intermediate/int_index_benchmark_join.sql
+[0m07:14:03  
+[0m07:14:03    compiled code at target/compiled/mag7_intel/models/intermediate/int_index_benchmark_join.sql
+[0m07:14:03  
+[0m07:14:03  Done. PASS=1 WARN=0 ERROR=1 SKIP=0 NO-OP=0 TOTAL=2
+
+2025-12-05 07:14:06 +0000 - dagster - ERROR - mag7_intel_daily_job - 5df39094-b8ea-49da-91cc-6b41545930d4 - int_stock_prices_enrich
+2025-12-05 07:14:06 +0000 - dagster - ERROR - mag7_intel_daily_job - 5df39094-b8ea-49da-91cc-6b41545930d4 - 5974 - int_stock_prices_enrich - STEP_FAILURE - Execution of step "int_stock_prices_enrich" failed.
+
+dagster._core.errors.DagsterExecutionStepExecutionError: Error occurred while executing op "int_stock_prices_enrich"::
+
+RuntimeError: dbt run failed with code 1
+
+Stack Trace:
+  File "/usr/local/lib/python3.11/site-packages/dagster/_core/execution/plan/utils.py", line 57, in op_execution_error_boundary
+    yield
+  File "/usr/local/lib/python3.11/site-packages/dagster/_utils/__init__.py", line 394, in iterate_with_context
+    next_output = next(iterator)
+                  ^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/dagster/_core/execution/plan/compute_generator.py", line 135, in _coerce_op_compute_fn_to_iterator
+    result = invoke_compute_fn(
+             ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/dagster/_core/execution/plan/compute_generator.py", line 115, in invoke_compute_fn
+    return fn(context, **args_to_pass) if context_arg_provided else fn(**args_to_pass)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/orchestration/orchestration/assets.py", line 207, in int_stock_prices_enrich
+    raise RuntimeError(f"dbt run failed with code {result.returncode}")
+

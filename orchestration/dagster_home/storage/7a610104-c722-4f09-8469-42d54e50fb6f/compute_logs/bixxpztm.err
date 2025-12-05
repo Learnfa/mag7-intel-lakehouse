@@ -1,0 +1,9 @@
+2025-12-04 15:43:49 +0000 - dagster - DEBUG - mag7_intel_daily_job - 7a610104-c722-4f09-8469-42d54e50fb6f - 6525 - LOGS_CAPTURED - Started capturing logs in process (pid: 6525).
+2025-12-04 15:43:49 +0000 - dagster - DEBUG - mag7_intel_daily_job - 7a610104-c722-4f09-8469-42d54e50fb6f - 6525 - news_csv - STEP_START - Started execution of step "news_csv".
+2025-12-04 15:44:02 +0000 - dagster - INFO - mag7_intel_daily_job - 7a610104-c722-4f09-8469-42d54e50fb6f - news_csv - Running news extractor for tickers=['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'META', 'TSLA', 'NVDA'], window=1d
+2025-12-04 15:45:37 +0000 - dagster - INFO - mag7_intel_daily_job - 7a610104-c722-4f09-8469-42d54e50fb6f - news_csv - News extractor wrote CSV to: /app/data/news/news_1d_20251204_154537.csv
+2025-12-04 15:45:37 +0000 - dagster - DEBUG - mag7_intel_daily_job - 7a610104-c722-4f09-8469-42d54e50fb6f - 6525 - news_csv - STEP_OUTPUT - Yielded output "result" of type "String". (Type check passed).
+2025-12-04 15:45:37 +0000 - dagster - DEBUG - mag7_intel_daily_job - 7a610104-c722-4f09-8469-42d54e50fb6f - news_csv - Writing file at: /app/orchestration/dagster_home/storage/news_csv using PickledObjectFilesystemIOManager...
+2025-12-04 15:45:37 +0000 - dagster - DEBUG - mag7_intel_daily_job - 7a610104-c722-4f09-8469-42d54e50fb6f - 6525 - news_csv - ASSET_MATERIALIZATION - Materialized value news_csv.
+2025-12-04 15:45:37 +0000 - dagster - DEBUG - mag7_intel_daily_job - 7a610104-c722-4f09-8469-42d54e50fb6f - 6525 - news_csv - HANDLED_OUTPUT - Handled output "result" using IO manager "io_manager"
+2025-12-04 15:45:37 +0000 - dagster - DEBUG - mag7_intel_daily_job - 7a610104-c722-4f09-8469-42d54e50fb6f - 6525 - news_csv - STEP_SUCCESS - Finished execution of step "news_csv" in 1m47s.
