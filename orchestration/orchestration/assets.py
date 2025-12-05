@@ -19,7 +19,6 @@ load_dotenv(PROJECT_ROOT / ".env")
 
 
 # 1) NEWS EXTRACTOR  --------------------------------------------------------- #
-
 @asset(
     description=(
         "CSV files with Google News headlines and FinBERT sentiment for the "
@@ -129,7 +128,7 @@ def raw_bq_loaded(context: AssetExecutionContext, news_csv: str, prices_csv: str
         raise RuntimeError(f"Meltano run load_csvs failed with code {result.returncode}")
 
 
-# 4) DBT TRANSFORMS (STAGING + MARTS)  -------------------------------------- #
+# 4) DBT TRANSFORMS (STAGING)  -------------------------------------- #
 
 @asset(
     deps=[raw_bq_loaded],
@@ -153,7 +152,45 @@ def stg_stock_prices(context: AssetExecutionContext) -> None:
         "dbt",
         "run",
         "-s",
-        "stg_stock_prices+ stg_news_headlines+",
+        "staging.*"
+    ]
+# "stg_stock_prices_all stg_stock_prices_mag7 stg_stock_prices_vix stg_stock_prices_index stg_news_headlines stg_gdelt_gkg_stock_news",
+
+    result = subprocess.run(
+        dbt_cmd,
+        cwd=DBT_DIR,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    context.log.info(result.stdout)
+    if result.returncode != 0:
+        context.log.error(result.stderr)
+        raise RuntimeError(f"dbt run failed with code {result.returncode}")
+
+
+# 5) DBT TRANSFORMS (INTERMEDIATE)  -------------------------------------- #
+
+@asset(
+    deps=[stg_stock_prices],
+    description=(
+        "dbt models for intermediate, including:\n"
+        "- int_stock_prices_mag7_ta\n"
+        "- int_index_benchmark_join"
+    ),
+)
+def int_stock_prices_enrich(context: AssetExecutionContext) -> None:
+    """
+    Runs dbt to materialize stock_prices_ta and index_benchmark_join in the intermediate dataset.
+    """
+    context.log.info("Running dbt: int_stock_prices_ta, int_index_benchmark_join")
+
+    dbt_cmd = [
+        "dbt",
+        "run",
+        "-s",
+        "intermediate.*"
     ]
 
     result = subprocess.run(

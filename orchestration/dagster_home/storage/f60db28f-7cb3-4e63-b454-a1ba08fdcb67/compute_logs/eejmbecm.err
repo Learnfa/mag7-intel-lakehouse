@@ -1,0 +1,62 @@
+2025-12-04 15:49:06 +0000 - dagster - DEBUG - mag7_intel_daily_job - f60db28f-7cb3-4e63-b454-a1ba08fdcb67 - 8688 - LOGS_CAPTURED - Started capturing logs in process (pid: 8688).
+2025-12-04 15:49:06 +0000 - dagster - DEBUG - mag7_intel_daily_job - f60db28f-7cb3-4e63-b454-a1ba08fdcb67 - 8688 - raw_bq_loaded - STEP_START - Started execution of step "raw_bq_loaded".
+2025-12-04 15:49:06 +0000 - dagster - DEBUG - mag7_intel_daily_job - f60db28f-7cb3-4e63-b454-a1ba08fdcb67 - raw_bq_loaded - Loading file from: /app/orchestration/dagster_home/storage/news_csv using PickledObjectFilesystemIOManager...
+2025-12-04 15:49:06 +0000 - dagster - DEBUG - mag7_intel_daily_job - f60db28f-7cb3-4e63-b454-a1ba08fdcb67 - 8688 - raw_bq_loaded - LOADED_INPUT - Loaded input "news_csv" using input manager "io_manager"
+2025-12-04 15:49:06 +0000 - dagster - DEBUG - mag7_intel_daily_job - f60db28f-7cb3-4e63-b454-a1ba08fdcb67 - raw_bq_loaded - Loading file from: /app/orchestration/dagster_home/storage/prices_csv using PickledObjectFilesystemIOManager...
+2025-12-04 15:49:06 +0000 - dagster - DEBUG - mag7_intel_daily_job - f60db28f-7cb3-4e63-b454-a1ba08fdcb67 - 8688 - raw_bq_loaded - LOADED_INPUT - Loaded input "prices_csv" using input manager "io_manager"
+2025-12-04 15:49:06 +0000 - dagster - DEBUG - mag7_intel_daily_job - f60db28f-7cb3-4e63-b454-a1ba08fdcb67 - 8688 - raw_bq_loaded - STEP_INPUT - Got input "news_csv" of type "String". (Type check passed).
+2025-12-04 15:49:06 +0000 - dagster - DEBUG - mag7_intel_daily_job - f60db28f-7cb3-4e63-b454-a1ba08fdcb67 - 8688 - raw_bq_loaded - STEP_INPUT - Got input "prices_csv" of type "String". (Type check passed).
+2025-12-04 15:49:06 +0000 - dagster - INFO - mag7_intel_daily_job - f60db28f-7cb3-4e63-b454-a1ba08fdcb67 - raw_bq_loaded - Running Meltano job: load_csvs
+2025-12-04 15:49:06 +0000 - dagster - INFO - mag7_intel_daily_job - f60db28f-7cb3-4e63-b454-a1ba08fdcb67 - raw_bq_loaded - news_csv asset: /app/data/news/news_1d_20251204_154537.csv
+2025-12-04 15:49:06 +0000 - dagster - INFO - mag7_intel_daily_job - f60db28f-7cb3-4e63-b454-a1ba08fdcb67 - raw_bq_loaded - prices_csv asset: /app/data/stocks/prices_20251204_20251204.csv
+2025-12-04 15:49:12 +0000 - dagster - INFO - mag7_intel_daily_job - f60db28f-7cb3-4e63-b454-a1ba08fdcb67 - raw_bq_loaded
+2025-12-04 15:49:12 +0000 - dagster - ERROR - mag7_intel_daily_job - f60db28f-7cb3-4e63-b454-a1ba08fdcb67 - raw_bq_loaded - [2m2025-12-04T15:49:08.510259Z[0m [[32m[1minfo     [0m] [1mEnvironment 'dev' is active   [0m
+[2m2025-12-04T15:49:09.278285Z[0m [[32m[1minfo     [0m] [1mInstalling extractor 'tap-csv'[0m
+[2m2025-12-04T15:49:09.522992Z[0m [[32m[1minfo     [0m] [1mInstalling loader 'target-bigquery'[0m
+[31m╭─[0m[31m────────────────────────────[0m[31m Installation error [0m[31m────────────────────────────[0m[31m─╮[0m
+[31m│[0m Using Python 3.11.14 environment at: .meltano/loaders/target-bigquery/venv   [31m│[0m
+[31m│[0m    Updating https://github.com/z3z1ma/target-bigquery.git (HEAD)             [31m│[0m
+[31m│[0m error: Git operation failed                                                  [31m│[0m
+[31m│[0m   Caused by: Git executable not found. Ensure that Git is installed and      [31m│[0m
+[31m│[0m available.                                                                   [31m│[0m
+[31m│[0m                                                                              [31m│[0m
+[31m╰─[0m[31m──────────────────────────────[0m[31m Command failed [0m[31m──────────────────────────────[0m[31m─╯[0m
+
+[2m2025-12-04T15:49:10.941457Z[0m [[31m[1merror    [0m] [1mInstallation failed. Command failed.[0m
+[31m╭─[0m[31m────────────────────────────[0m[31m Installation error [0m[31m────────────────────────────[0m[31m─╮[0m
+[31m│[0m Using Python 3.11.14 environment at: .meltano/extractors/tap-csv/venv        [31m│[0m
+[31m│[0m    Updating https://github.com/MeltanoLabs/tap-csv.git (HEAD)                [31m│[0m
+[31m│[0m error: Git operation failed                                                  [31m│[0m
+[31m│[0m   Caused by: Git executable not found. Ensure that Git is installed and      [31m│[0m
+[31m│[0m available.                                                                   [31m│[0m
+[31m│[0m                                                                              [31m│[0m
+[31m╰─[0m[31m──────────────────────────────[0m[31m Command failed [0m[31m──────────────────────────────[0m[31m─╯[0m
+
+[2m2025-12-04T15:49:10.963154Z[0m [[31m[1merror    [0m] [1mInstallation failed. Command failed.[0m
+[2m2025-12-04T15:49:10.965163Z[0m [[31m[1merror    [0m] [1mInstalled 0/2 plugins         [0m
+[2m2025-12-04T15:49:10.966258Z[0m [[32m[1minfo     [0m] [1mRunning job with name 'dev:tap-csv-to-target-bigquery' and run ID '019aea0d-9125-79e2-96cd-70741904c7d0'[0m
+[2m2025-12-04T15:49:11.282683Z[0m [[31m[1merror    [0m] [1mCannot start plugin tap-csv: Executable 'tap-csv' could not be found. Extractor 'tap-csv' may not have been installed yet using `meltano install --plugin-type extractor tap-csv`, or the executable name may be incorrect.[0m
+[2m2025-12-04T15:49:11.283168Z[0m [[31m[1merror    [0m] [1mBlock run completed           [0m
+[2m2025-12-04T15:49:11.288802Z[0m [[32m[1minfo     [0m] [1mRun completed                 [0m
+
+2025-12-04 15:49:12 +0000 - dagster - ERROR - mag7_intel_daily_job - f60db28f-7cb3-4e63-b454-a1ba08fdcb67 - 8688 - raw_bq_loaded - STEP_FAILURE - Execution of step "raw_bq_loaded" failed.
+
+dagster._core.errors.DagsterExecutionStepExecutionError: Error occurred while executing op "raw_bq_loaded"::
+
+RuntimeError: Meltano run load_csvs failed with code 1
+
+Stack Trace:
+  File "/usr/local/lib/python3.11/site-packages/dagster/_core/execution/plan/utils.py", line 57, in op_execution_error_boundary
+    yield
+  File "/usr/local/lib/python3.11/site-packages/dagster/_utils/__init__.py", line 394, in iterate_with_context
+    next_output = next(iterator)
+                  ^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/dagster/_core/execution/plan/compute_generator.py", line 135, in _coerce_op_compute_fn_to_iterator
+    result = invoke_compute_fn(
+             ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/dagster/_core/execution/plan/compute_generator.py", line 115, in invoke_compute_fn
+    return fn(context, **args_to_pass) if context_arg_provided else fn(**args_to_pass)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/orchestration/orchestration/assets.py", line 128, in raw_bq_loaded
+    raise RuntimeError(f"Meltano run load_csvs failed with code {result.returncode}")
+

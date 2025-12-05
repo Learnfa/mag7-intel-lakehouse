@@ -83,6 +83,7 @@ logs/
 **/cache/
 __snapshots__/
 .donotgit/
+.keys/
 
 ########################################
 # OS / EDITOR JUNK

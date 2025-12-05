@@ -1,6 +1,6 @@
 {{ config( 
     materialized = 'table',
-    schema = 'intermittent',
+    schema = 'intermediate',
     alias = 'stock_prices_mag7_ta',
     partition_by = {
       "field": "trade_date",
@@ -53,7 +53,7 @@ returns AS (
   FROM lagged
 )
 
--- 4. Construct final table with rolling/windowed TA features
+-- 4. Construct final table with rolling/window TA features
 SELECT
   trade_date,
   ticker,

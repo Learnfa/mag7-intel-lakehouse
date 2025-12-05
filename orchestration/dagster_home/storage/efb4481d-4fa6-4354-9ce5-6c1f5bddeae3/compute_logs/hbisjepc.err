@@ -1,0 +1,9 @@
+2025-12-04 14:15:11 +0000 - dagster - DEBUG - mag7_intel_daily_job - efb4481d-4fa6-4354-9ce5-6c1f5bddeae3 - 1922 - LOGS_CAPTURED - Started capturing logs in process (pid: 1922).
+2025-12-04 14:15:11 +0000 - dagster - DEBUG - mag7_intel_daily_job - efb4481d-4fa6-4354-9ce5-6c1f5bddeae3 - 1922 - prices_csv - STEP_START - Started execution of step "prices_csv".
+2025-12-04 14:15:13 +0000 - dagster - INFO - mag7_intel_daily_job - efb4481d-4fa6-4354-9ce5-6c1f5bddeae3 - prices_csv - Starting stock extractor (mode=incremental, universe=mag7_with_indexes, include_vix=True)...
+2025-12-04 14:15:14 +0000 - dagster - INFO - mag7_intel_daily_job - efb4481d-4fa6-4354-9ce5-6c1f5bddeae3 - prices_csv - Stock extractor wrote CSV to: /app/data/stocks/prices_20251204_20251204.csv
+2025-12-04 14:15:14 +0000 - dagster - DEBUG - mag7_intel_daily_job - efb4481d-4fa6-4354-9ce5-6c1f5bddeae3 - 1922 - prices_csv - STEP_OUTPUT - Yielded output "result" of type "String". (Type check passed).
+2025-12-04 14:15:14 +0000 - dagster - DEBUG - mag7_intel_daily_job - efb4481d-4fa6-4354-9ce5-6c1f5bddeae3 - prices_csv - Writing file at: /app/orchestration/dagster_home/storage/prices_csv using PickledObjectFilesystemIOManager...
+2025-12-04 14:15:14 +0000 - dagster - DEBUG - mag7_intel_daily_job - efb4481d-4fa6-4354-9ce5-6c1f5bddeae3 - 1922 - prices_csv - ASSET_MATERIALIZATION - Materialized value prices_csv.
+2025-12-04 14:15:14 +0000 - dagster - DEBUG - mag7_intel_daily_job - efb4481d-4fa6-4354-9ce5-6c1f5bddeae3 - 1922 - prices_csv - HANDLED_OUTPUT - Handled output "result" using IO manager "io_manager"
+2025-12-04 14:15:14 +0000 - dagster - DEBUG - mag7_intel_daily_job - efb4481d-4fa6-4354-9ce5-6c1f5bddeae3 - 1922 - prices_csv - STEP_SUCCESS - Finished execution of step "prices_csv" in 3.7s.

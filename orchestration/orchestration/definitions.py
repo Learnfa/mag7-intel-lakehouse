@@ -4,6 +4,7 @@ from orchestration.assets import (
     prices_csv,
     raw_bq_loaded,
     stg_stock_prices,
+    int_stock_prices_enrich,
 )
 
 # 1) Collect all assets
@@ -12,6 +13,7 @@ all_assets = [
     prices_csv,
     raw_bq_loaded,
     stg_stock_prices,
+    int_stock_prices_enrich,
 ]
 
 # 2) Define asset job
@@ -23,7 +25,7 @@ mag7_intel_daily_job = define_asset_job(
 # 3) Define schedule
 daily_mag7_schedule = ScheduleDefinition(
     job=mag7_intel_daily_job,
-    cron_schedule="0 3 * * *",
+    cron_schedule="00 21 * * *",
     execution_timezone="Asia/Singapore",
 )
 

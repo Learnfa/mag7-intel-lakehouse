@@ -2,14 +2,15 @@ services:
   dagster-webserver:
     build: .
     working_dir: /app
+    user: "0:0"
     env_file:
       - .env                    # load all env vars for dbt/meltano/dagster
     environment:
-      DAGSTER_HOME: /app/orchestration
-      PYTHONPATH: /app
+      DAGSTER_HOME: /app/orchestration/dagster_home
+      PYTHONPATH: /app/orchestration
     volumes:
       - .:/app
-      - ${GCP_KEY_PATH_HOST}:/app/.keys
+      - ./.keys:/app/.keys
     ports:
       - "3000:3000"
     command: >
@@ -22,16 +23,18 @@ services:
   dagster-daemon:
     build: .
     working_dir: /app
+    user: "0:0"
     env_file:
       - .env
     environment:
-      DAGSTER_HOME: /app/orchestration
-      PYTHONPATH: /app
+      DAGSTER_HOME: /app/orchestration/dagster_home
+      PYTHONPATH: /app/orchestration
     volumes:
       - .:/app
-      - ${GCP_KEY_PATH_HOST}:/app/.keys
+#      - ${GCP_KEY_PATH_HOST}:/app/.keys
+      - ./.keys:/app/.keys
     depends_on:
       - dagster-webserver
     command: >
-      dagster-daemon run
+      dagster-daemon run -w workplace.yaml
     restart: unless-stopped

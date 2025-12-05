@@ -1,0 +1,31 @@
+2025-12-04 16:43:10 +0000 - dagster - DEBUG - mag7_intel_daily_job - adc0772e-fa43-4f37-9a12-8920fdae9cb1 - 31414 - LOGS_CAPTURED - Started capturing logs in process (pid: 31414).
+2025-12-04 16:43:10 +0000 - dagster - DEBUG - mag7_intel_daily_job - adc0772e-fa43-4f37-9a12-8920fdae9cb1 - 31414 - stg_stock_prices - STEP_START - Started execution of step "stg_stock_prices".
+2025-12-04 16:43:10 +0000 - dagster - INFO - mag7_intel_daily_job - adc0772e-fa43-4f37-9a12-8920fdae9cb1 - stg_stock_prices - Running dbt: stg_stock_prices+
+2025-12-04 16:43:23 +0000 - dagster - INFO - mag7_intel_daily_job - adc0772e-fa43-4f37-9a12-8920fdae9cb1 - stg_stock_prices - [0m16:43:13  Running with dbt=1.10.15
+[0m16:43:19  Registered adapter: bigquery=1.10.3
+[0m16:43:20  Encountered an error:
+Compilation Error in model int_index_benchmark_join (models/intermediate/int_index_benchmark_join.sql)
+  'index_benchmark_join' is undefined. This can happen when calling a macro that does not exist. Check for typos and/or install package dependencies with "dbt deps".
+
+2025-12-04 16:43:23 +0000 - dagster - ERROR - mag7_intel_daily_job - adc0772e-fa43-4f37-9a12-8920fdae9cb1 - stg_stock_prices
+2025-12-04 16:43:23 +0000 - dagster - ERROR - mag7_intel_daily_job - adc0772e-fa43-4f37-9a12-8920fdae9cb1 - 31414 - stg_stock_prices - STEP_FAILURE - Execution of step "stg_stock_prices" failed.
+
+dagster._core.errors.DagsterExecutionStepExecutionError: Error occurred while executing op "stg_stock_prices"::
+
+RuntimeError: dbt run failed with code 2
+
+Stack Trace:
+  File "/usr/local/lib/python3.11/site-packages/dagster/_core/execution/plan/utils.py", line 57, in op_execution_error_boundary
+    yield
+  File "/usr/local/lib/python3.11/site-packages/dagster/_utils/__init__.py", line 394, in iterate_with_context
+    next_output = next(iterator)
+                  ^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/dagster/_core/execution/plan/compute_generator.py", line 135, in _coerce_op_compute_fn_to_iterator
+    result = invoke_compute_fn(
+             ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/dagster/_core/execution/plan/compute_generator.py", line 115, in invoke_compute_fn
+    return fn(context, **args_to_pass) if context_arg_provided else fn(**args_to_pass)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/orchestration/orchestration/assets.py", line 169, in stg_stock_prices
+    raise RuntimeError(f"dbt run failed with code {result.returncode}")
+

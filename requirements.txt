@@ -13,7 +13,7 @@ pandas>=2.0
 requests>=2.31
 # snscrape>=0.7.0    # Reddit/Twitter scraping
 # torch>=2.9.0
-torch==2.1.2+cpu
+torch>=2.5+cpu
 --extra-index-url https://download.pytorch.org/whl/cpu
 transformers>=4.57.0
 yfinance>=0.2.36
