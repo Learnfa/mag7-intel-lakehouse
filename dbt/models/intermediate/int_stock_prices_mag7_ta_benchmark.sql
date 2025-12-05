@@ -1,7 +1,7 @@
 {{ config(
     materialized = 'view',
     schema = 'intermediate',
-    alias = 'index_benchmark_join'
+    alias = 'stock_prices_mag7_ta_benchmark',
 ) }}
 
 -- 1) Start from TA table

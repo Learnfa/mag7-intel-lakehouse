@@ -84,7 +84,7 @@ export BQ_DATASET_PRIX="mag7_intel"
 export BQ_DATASET_RAW="mag7_intel_raw"
 export BQ_DATASET_STAGING="mag7_intel_staging"
 export BQ_DATASET_INTERMEDIATE="mag7_intel_intermediate"
-export BQ_DATASET_MARTS="mag7_intel_marts"
+export BQ_DATASET_MART="mag7_intel_mart"
 ```
 
 To clean up the environment var after deactivating the environment, create deactivate hook shell file
@@ -102,7 +102,7 @@ unset BQ_DATASET_PRIX
 unset BQ_DATASET_RAW
 unset BQ_DATASET_STAGING
 unset BQ_DATASET_INTERMEDIATE
-unset BQ_DATASET_MARTS
+unset BQ_DATASET_MART
 ```
 
 To load the environment variables, deactivate and reactivate the project environment
@@ -387,7 +387,7 @@ Bigquery DW Datasets/
 |  Storage:                                                   |
 |    - BigQuery datasets: mag7_intel_intermediate             |
 |        - stock_prices_mag7_ta                               |
-|        - index_benchmark_join                               |
+|        - stock_prices_mag7_ta_benchmark                     |
 |        -                                                    |
 +-------------------------------------------------------------+
                                |

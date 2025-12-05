@@ -25,7 +25,7 @@ mag7_intel_daily_job = define_asset_job(
 # 3) Define schedule
 daily_mag7_schedule = ScheduleDefinition(
     job=mag7_intel_daily_job,
-    cron_schedule="00 21 * * *",
+    cron_schedule="30 21 * * *",
     execution_timezone="Asia/Singapore",
 )
 

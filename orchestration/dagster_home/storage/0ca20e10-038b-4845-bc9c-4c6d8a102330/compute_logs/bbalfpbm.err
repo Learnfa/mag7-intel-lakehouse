@@ -1,0 +1,15 @@
+2025-12-05 13:32:14 +0000 - dagster - DEBUG - mag7_intel_daily_job - 0ca20e10-038b-4845-bc9c-4c6d8a102330 - 5247 - LOGS_CAPTURED - Started capturing logs in process (pid: 5247).
+2025-12-05 13:32:14 +0000 - dagster - DEBUG - mag7_intel_daily_job - 0ca20e10-038b-4845-bc9c-4c6d8a102330 - 5247 - raw_bq_loaded - STEP_START - Started execution of step "raw_bq_loaded".
+2025-12-05 13:32:14 +0000 - dagster - DEBUG - mag7_intel_daily_job - 0ca20e10-038b-4845-bc9c-4c6d8a102330 - raw_bq_loaded - Loading file from: /app/orchestration/dagster_home/storage/news_csv using PickledObjectFilesystemIOManager...
+2025-12-05 13:32:14 +0000 - dagster - DEBUG - mag7_intel_daily_job - 0ca20e10-038b-4845-bc9c-4c6d8a102330 - 5247 - raw_bq_loaded - LOADED_INPUT - Loaded input "news_csv" using input manager "io_manager", from output "result" of step "news_csv"
+2025-12-05 13:32:14 +0000 - dagster - DEBUG - mag7_intel_daily_job - 0ca20e10-038b-4845-bc9c-4c6d8a102330 - raw_bq_loaded - Loading file from: /app/orchestration/dagster_home/storage/prices_csv using PickledObjectFilesystemIOManager...
+2025-12-05 13:32:14 +0000 - dagster - DEBUG - mag7_intel_daily_job - 0ca20e10-038b-4845-bc9c-4c6d8a102330 - 5247 - raw_bq_loaded - LOADED_INPUT - Loaded input "prices_csv" using input manager "io_manager", from output "result" of step "prices_csv"
+2025-12-05 13:32:14 +0000 - dagster - DEBUG - mag7_intel_daily_job - 0ca20e10-038b-4845-bc9c-4c6d8a102330 - 5247 - raw_bq_loaded - STEP_INPUT - Got input "news_csv" of type "String". (Type check passed).
+2025-12-05 13:32:14 +0000 - dagster - DEBUG - mag7_intel_daily_job - 0ca20e10-038b-4845-bc9c-4c6d8a102330 - 5247 - raw_bq_loaded - STEP_INPUT - Got input "prices_csv" of type "String". (Type check passed).
+2025-12-05 13:32:14 +0000 - dagster - INFO - mag7_intel_daily_job - 0ca20e10-038b-4845-bc9c-4c6d8a102330 - raw_bq_loaded - Running Meltano job: load_csvs
+2025-12-05 13:32:14 +0000 - dagster - INFO - mag7_intel_daily_job - 0ca20e10-038b-4845-bc9c-4c6d8a102330 - raw_bq_loaded - news_csv asset: /app/data/news/news_1d_20251205_133209.csv
+2025-12-05 13:32:14 +0000 - dagster - INFO - mag7_intel_daily_job - 0ca20e10-038b-4845-bc9c-4c6d8a102330 - raw_bq_loaded - prices_csv asset: /app/data/stocks/prices_20251205_20251205.csv
+2025-12-05 13:34:46 +0000 - dagster - INFO - mag7_intel_daily_job - 0ca20e10-038b-4845-bc9c-4c6d8a102330 - raw_bq_loaded
+2025-12-05 13:34:46 +0000 - dagster - DEBUG - mag7_intel_daily_job - 0ca20e10-038b-4845-bc9c-4c6d8a102330 - 5247 - raw_bq_loaded - STEP_OUTPUT - Yielded output "result" of type "Nothing". (Type check passed).
+2025-12-05 13:34:46 +0000 - dagster - DEBUG - mag7_intel_daily_job - 0ca20e10-038b-4845-bc9c-4c6d8a102330 - 5247 - raw_bq_loaded - ASSET_MATERIALIZATION - Materialized value raw_bq_loaded.
+2025-12-05 13:34:46 +0000 - dagster - DEBUG - mag7_intel_daily_job - 0ca20e10-038b-4845-bc9c-4c6d8a102330 - 5247 - raw_bq_loaded - STEP_SUCCESS - Finished execution of step "raw_bq_loaded" in 2m32s.

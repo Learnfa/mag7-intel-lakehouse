@@ -1,0 +1,26 @@
+2025-12-05 13:35:19 +0000 - dagster - DEBUG - mag7_intel_daily_job - 0ca20e10-038b-4845-bc9c-4c6d8a102330 - 6592 - LOGS_CAPTURED - Started capturing logs in process (pid: 6592).
+2025-12-05 13:35:19 +0000 - dagster - DEBUG - mag7_intel_daily_job - 0ca20e10-038b-4845-bc9c-4c6d8a102330 - 6592 - int_stock_prices_enrich - STEP_START - Started execution of step "int_stock_prices_enrich".
+2025-12-05 13:35:19 +0000 - dagster - INFO - mag7_intel_daily_job - 0ca20e10-038b-4845-bc9c-4c6d8a102330 - int_stock_prices_enrich - Running dbt: int_stock_prices_ta, int_index_benchmark_join
+2025-12-05 13:35:58 +0000 - dagster - INFO - mag7_intel_daily_job - 0ca20e10-038b-4845-bc9c-4c6d8a102330 - int_stock_prices_enrich - [0m13:35:22  Running with dbt=1.10.15
+[0m13:35:27  Registered adapter: bigquery=1.10.3
+[0m13:35:28  [[33mWARNING[0m]: Configuration paths exist in your dbt_project.yml file which do not apply to any resources.
+There are 1 unused configuration paths:
+- models.mag7_intel.example
+[0m13:35:28  Found 8 models, 2 seeds, 15 data tests, 10 sources, 520 macros
+[0m13:35:28  
+[0m13:35:28  Concurrency: 4 threads (target='dev')
+[0m13:35:28  
+[0m13:35:30  1 of 2 START sql table model mag7_intel_intermediate.stock_prices_mag7_ta ...... [RUN]
+[0m13:35:51  1 of 2 OK created sql table model mag7_intel_intermediate.stock_prices_mag7_ta . [[32mCREATE TABLE (10.4k rows, 996.8 KiB processed)[0m in 21.35s]
+[0m13:35:51  2 of 2 START sql view model mag7_intel_intermediate.stock_prices_mag7_ta_benchmark  [RUN]
+[0m13:35:53  2 of 2 OK created sql view model mag7_intel_intermediate.stock_prices_mag7_ta_benchmark  [[32mCREATE VIEW (0 processed)[0m in 1.18s]
+[0m13:35:53  
+[0m13:35:53  Finished running 1 table model, 1 view model in 0 hours 0 minutes and 24.27 seconds (24.27s).
+[0m13:35:53  
+[0m13:35:53  [32mCompleted successfully[0m
+[0m13:35:53  
+[0m13:35:53  Done. PASS=2 WARN=0 ERROR=0 SKIP=0 NO-OP=0 TOTAL=2
+
+2025-12-05 13:35:58 +0000 - dagster - DEBUG - mag7_intel_daily_job - 0ca20e10-038b-4845-bc9c-4c6d8a102330 - 6592 - int_stock_prices_enrich - STEP_OUTPUT - Yielded output "result" of type "Nothing". (Type check passed).
+2025-12-05 13:35:58 +0000 - dagster - DEBUG - mag7_intel_daily_job - 0ca20e10-038b-4845-bc9c-4c6d8a102330 - 6592 - int_stock_prices_enrich - ASSET_MATERIALIZATION - Materialized value int_stock_prices_enrich.
+2025-12-05 13:35:58 +0000 - dagster - DEBUG - mag7_intel_daily_job - 0ca20e10-038b-4845-bc9c-4c6d8a102330 - 6592 - int_stock_prices_enrich - STEP_SUCCESS - Finished execution of step "int_stock_prices_enrich" in 39.01s.

@@ -41,7 +41,7 @@ sources:
 #    schema: "{{ env_var('BQ_DATASET_INTERMEDIATE') }}"
 #    tables:
 #      - name: stock_prices_mag7_ta
-#      - name: index_benchmark_join
+#      - name: stock_prices_mag7_ta_benchmark
 #      - name: sa
 
 # 5. Mart Dataset (fcts, dims)
