@@ -2,11 +2,9 @@ import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
 
-from data.bq_client import run_query
-from data.loaders import load_signal_core_history
+from utils.bq_client import run_query
 from components.banners import research_warning_banner
 from components.freshness import data_freshness_panel
-
 
 TABLE = "mag7_intel_mart.signal_research_sentiment"
 

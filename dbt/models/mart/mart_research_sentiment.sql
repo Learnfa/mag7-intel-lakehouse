@@ -1,14 +1,14 @@
 {{ config(
     materialized = 'table',
     schema       = 'mart',
-    alias        = 'signal_research_sentiment',
+    alias        = 'research_sentiment',
     partition_by = { "field": "trade_date", "data_type": "date" },
     cluster_by   = ["ticker", "sentiment_source"],
     tags         = ['mart', 'research', 'sentiment']
 ) }}
 
 -- ---------------------------------------------------------------------
--- signal_research_sentiment
+-- research_sentiment
 --
 -- PURPOSE:
 --   Research-only sentiment vs forward returns dataset.
@@ -45,7 +45,7 @@ prices AS (
         ticker,
         fwd_return_5d,
         fwd_return_20d
-    FROM {{ ref('fact_prices') }}
+    FROM {{ ref('int_mag7_ta') }}
 
 ),
 

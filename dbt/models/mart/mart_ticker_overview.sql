@@ -44,7 +44,7 @@ WITH base AS (
         p.ndxe_excess_return_20d
 
     FROM {{ ref('fact_regimes') }} r
-    LEFT JOIN {{ ref('fact_prices') }} p
+    LEFT JOIN {{ ref('int_mag7_ta_benchmark') }} p
       ON p.trade_date = r.trade_date
      AND p.ticker     = r.ticker
 ),

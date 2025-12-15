@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
 
-from data.loaders import load_regime_summary, load_signal_core_latest, load_signal_core_dates
+from utils.data_loaders import load_regime_summary, load_s0_core_dates
 from components.banners import production_truth_banner
 from components.freshness import data_freshness_panel
 from components.tables import styled_signal_table
@@ -36,7 +36,7 @@ with st.sidebar:
     
     # --- As-at Date (shared glider) ---
     with st.spinner("Loading available dates…"):
-        dates_list = load_signal_core_dates()
+        dates_list = load_s0_core_dates()
 
     # HARD sanitize (important)
     if isinstance(dates_list, pd.DataFrame):

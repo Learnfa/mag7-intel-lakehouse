@@ -4,18 +4,18 @@ import plotly.graph_objects as go
 
 from google.cloud import bigquery
 
-from data.bq_client import run_query
-from utils.constants import SIGNAL_COLORS
+from utils.bq_client import run_query
+from utils.constants import S0_SIGNAL_COLORS
 
 from components.banners import research_warning_banner
 from components.freshness import data_freshness_panel
 
 # Optional: use settings constants if you have them
 try:
-    from config.settings import TABLE_SIGNAL_RESEARCH_PERF, TABLE_SIGNAL_RESEARCH_EVENTS
+    from config.settings import TABLE_S0_RESEARCH_PERF, TABLE_S0_RESEARCH_EVENTS
 except Exception:
-    TABLE_SIGNAL_RESEARCH_PERF = "mag7_intel_mart.signal_research_performance"
-    TABLE_SIGNAL_RESEARCH_EVENTS = "mag7_intel_mart.signal_research_events"
+    TABLE_S0_RESEARCH_PERF = "mag7_intel_mart.s0_research_performance"
+    TABLE_S0_RESEARCH_EVENTS = "mag7_intel_mart.s0_research_events"
 
 
 st.set_page_config(
@@ -44,7 +44,7 @@ def _param_config(params: dict) -> bigquery.QueryJobConfig:
 def load_research_performance() -> pd.DataFrame:
     sql = f"""
     SELECT *
-    FROM `{TABLE_SIGNAL_RESEARCH_PERF}`
+    FROM `{TABLE_S0_RESEARCH_PERF}`
     """
     return run_query(sql)
 
@@ -72,7 +72,7 @@ def load_heatmap_surface(horizon: int, period_label: str, state: str) -> pd.Data
       COUNT(*) AS n_obs,
       AVG({col}) AS avg_forward_return,
       COUNTIF({col} > 0) / COUNT(*) AS win_rate
-    FROM `{TABLE_SIGNAL_RESEARCH_EVENTS}`
+    FROM `{TABLE_S0_RESEARCH_EVENTS}`
     WHERE core_signal_state = @state
       {period_where}
       AND {col} IS NOT NULL
@@ -220,7 +220,7 @@ else:
             go.Bar(
                 x=summary["period_label"],
                 y=summary["avg_forward_return_w"],
-                marker=dict(color=SIGNAL_COLORS.get(selected_state, "#2563EB")),
+                marker=dict(color=S0_SIGNAL_COLORS.get(selected_state, "#2563EB")),
                 hovertemplate="<b>%{x}</b><br>Avg fwd return: %{y:.4f}<extra></extra>",
             )
         )
@@ -239,7 +239,7 @@ else:
             go.Bar(
                 x=summary["period_label"],
                 y=summary["win_rate_w"],
-                marker=dict(color=SIGNAL_COLORS.get(selected_state, "#2563EB")),
+                marker=dict(color=S0_SIGNAL_COLORS.get(selected_state, "#2563EB")),
                 hovertemplate="<b>%{x}</b><br>Win rate: %{y:.2%}<extra></extra>",
             )
         )

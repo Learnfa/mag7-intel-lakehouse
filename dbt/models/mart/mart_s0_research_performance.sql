@@ -1,13 +1,13 @@
 {{ config(
     materialized = 'table',
     schema       = 'mart',
-    alias        = 'signal_research_performance',
+    alias        = 's0_research_performance',
     cluster_by   = ['ticker', 'period_label', 'horizon'],
     tags         = ['mart', 'research', 'signal', 'performance']
 ) }}
 
 -- ---------------------------------------------------------------------
--- signal_research_performance
+-- s0_research_performance
 --
 -- Research validation table (NOT execution backtest).
 -- Uses forward returns already computed in fact_regimes (research-only fields).
@@ -35,7 +35,7 @@ WITH core AS (
         core_score,
         regime_bucket_10,
         zscore_bucket_10
-    FROM {{ ref('mart_signal_core') }}
+    FROM {{ ref('mart_s0_core_value') }}
 ),
 
 reg AS (

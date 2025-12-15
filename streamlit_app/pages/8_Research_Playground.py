@@ -4,7 +4,7 @@ import numpy as np
 import plotly.graph_objects as go
 
 from google.cloud import bigquery
-from data.bq_client import run_query
+from utils.bq_client import run_query
 
 from components.banners import research_danger_banner
 from components.freshness import data_freshness_panel

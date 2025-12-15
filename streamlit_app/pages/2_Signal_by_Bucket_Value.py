@@ -2,20 +2,19 @@ import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
 
-from data.loaders import load_signal_core_latest, load_signal_core_history
+from utils.data_loaders import load_s0_core_latest, load_s0_core_history
 from components.banners import production_truth_banner
 from components.metrics import kpi_row
 from components.freshness import data_freshness_panel
-from utils.constants import SIGNAL_COLORS
-
+from utils.constants import S0_SIGNAL_COLORS
 
 st.set_page_config(
-    page_title="Core Signal | MAG7 Intel",
+    page_title="S0 Core Signal | Bucket Value",
     page_icon="🎯",
     layout="wide",
 )
 
-st.title("🎯 Core Signal")
+st.title("🎯 S0 Core Signal | Bucket Value")
 st.caption("Canonical signal monitoring • No performance • No research tables")
 
 production_truth_banner()
@@ -24,10 +23,10 @@ production_truth_banner()
 # Load latest snapshot (for selector defaults + KPI)
 # ---------------------------------------------------------------------
 with st.spinner("Loading latest core signal snapshot…"):
-    latest_df = load_signal_core_latest()
+    latest_df = load_s0_core_latest()
 
 if latest_df.empty:
-    st.error("No data found in `signal_core`.")
+    st.error("No data found in `mart.s0_core_value`.")
     st.stop()
 
 asof_date = pd.to_datetime(latest_df["trade_date"]).max()
@@ -53,7 +52,7 @@ with st.sidebar:
 # Load history for selected ticker
 # ---------------------------------------------------------------------
 with st.spinner(f"Loading signal history for {selected_ticker}…"):
-    hist = load_signal_core_history(selected_ticker)
+    hist = load_s0_core_history(selected_ticker)
 
 if hist.empty:
     st.warning(f"No history found for ticker: {selected_ticker}")
@@ -115,7 +114,7 @@ def _state_scatter(df: pd.DataFrame) -> go.Figure:
                 y=[STATE_Y[state]] * len(sub),
                 mode="markers",
                 name=state,
-                marker=dict(size=7, color=SIGNAL_COLORS.get(state, "#999999")),
+                marker=dict(size=7, color=S0_SIGNAL_COLORS.get(state, "#999999")),
                 customdata=sub[["regime_bucket_10", "zscore_bucket_10", "price_pos_200d", "price_zscore_20d", "core_score"]],
                 hovertemplate=(
                     "<b>%{x|%Y-%m-%d}</b><br>"
@@ -221,7 +220,7 @@ if show_distribution:
                     x=[state],
                     y=[dist[state]],
                     name=state,
-                    marker=dict(color=SIGNAL_COLORS.get(state, "#999999")),
+                    marker=dict(color=S0_SIGNAL_COLORS.get(state, "#999999")),
                     hovertemplate=f"{state}: %{{y}} days<extra></extra>",
                 )
             )
@@ -244,7 +243,7 @@ st.caption("Last 90 rows for quick inspection and debugging.")
 recent = hist.sort_values("trade_date", ascending=False).head(90)
 
 def highlight_state(val: str) -> str:
-    color = SIGNAL_COLORS.get(val, "#FFFFFF")
+    color = S0_SIGNAL_COLORS.get(val, "#FFFFFF")
     return f"background-color: {color}; color: white;"
 
 st.dataframe(

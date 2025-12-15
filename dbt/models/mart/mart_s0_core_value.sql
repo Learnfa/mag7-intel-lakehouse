@@ -1,18 +1,21 @@
 {{ config(
     materialized = 'table',
     schema       = 'mart',
-    alias        = 'signal_core',
+    alias        = 's0_core_value',
     partition_by = { "field": "trade_date", "data_type": "date" },
     cluster_by   = ["ticker"],
-    tags         = ['mart', 'signal', 'core']
+    tags         = ['mart', 'signal', 'core', 'value']
 ) }}
 
 -- ---------------------------------------------------------------------
--- signal_core (S0)
+-- s0_signal_core_value
 --
--- Canonical core alpha signal (truth table).
--- LONG_SETUP if:
---   regime_bucket_10 <= 3 AND zscore_bucket_10 <= 3
+-- Canonical core alpha signal by bucket value only.
+--
+-- Defines value-style long setup using:
+--   - regime_bucket_10 <= 3 AND zscore_bucket_10 <= 3
+-- Outputs:
+--   - LONG_SETUP / OVEREXTENDED / NEUTRAL--
 --
 -- No volatility/macro/exec logic here.
 -- ---------------------------------------------------------------------
@@ -29,7 +32,7 @@ WITH base AS (
         price_zscore_20d,
 
         CURRENT_TIMESTAMP() AS asof_ts,
-        'S0_v1' AS signal_version
+        'S0_value_v1' AS signal_version
     FROM {{ ref('fact_regimes') }}
 ),
 

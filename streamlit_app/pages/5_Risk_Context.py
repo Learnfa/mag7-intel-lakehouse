@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
 
-from data.loaders import (
+from utils.data_loaders import (
     load_risk_dashboard_latest,
     load_macro_risk_latest,
     load_macro_risk_history,
@@ -10,7 +10,6 @@ from data.loaders import (
 from components.banners import production_truth_banner
 from components.freshness import data_freshness_panel
 from components.tables import styled_signal_table 
-from utils.constants import SIGNAL_COLORS
 
 st.set_page_config(
     page_title="Risk Context | MAG7 Intel",

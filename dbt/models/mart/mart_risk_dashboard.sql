@@ -84,7 +84,7 @@ base_relative AS (
         ticker,
         ndx_excess_return_1d,
         ndxe_excess_return_1d
-    FROM {{ ref('fact_prices') }}
+    FROM {{ ref('int_mag7_ta_benchmark') }}
     WHERE ndx_excess_return_1d IS NOT NULL
        OR ndxe_excess_return_1d IS NOT NULL
 ),

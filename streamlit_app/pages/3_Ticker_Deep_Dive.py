@@ -2,15 +2,15 @@ import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
 
-from data.loaders import      \
-    load_signal_core_latest,  \
-    load_signal_core_history, \
+from utils.data_loaders import      \
+    load_s0_core_latest,  \
+    load_s0_core_history, \
     load_price_corridor_history
 from components.banners import production_truth_banner
 from components.metrics import kpi_row
 from components.freshness import data_freshness_panel
 from components.tables import styled_signal_table
-from utils.constants import SIGNAL_COLORS
+from utils.constants import S0_SIGNAL_COLORS
 
 
 st.set_page_config(
@@ -29,7 +29,7 @@ production_truth_banner()
 # Load latest snapshot (for selector defaults + KPIs)
 # ---------------------------------------------------------------------
 with st.spinner("Loading latest signal snapshot…"):
-    latest_df = load_signal_core_latest()
+    latest_df = load_s0_core_latest()
 
 if latest_df.empty:
     st.error("No data found in `signal_core`.")
@@ -59,7 +59,7 @@ with st.sidebar:
 # Load ticker history
 # ---------------------------------------------------------------------
 with st.spinner(f"Loading signal history for {selected_ticker}…"):
-    sig_hist = load_signal_core_history(selected_ticker)
+    sig_hist = load_s0_core_history(selected_ticker)
 
 if sig_hist.empty:
     st.warning(f"No signal history found for {selected_ticker}")
@@ -188,7 +188,7 @@ if show_markers:
                     name=f"{state} marker",
                     marker=dict(
                         size=8,
-                        color=SIGNAL_COLORS.get(state, "#999999"),
+                        color=S0_SIGNAL_COLORS.get(state, "#999999"),
                         symbol="circle",
                         line=dict(width=0),
                     ),
@@ -244,7 +244,7 @@ if show_locator:
         x=[rb],
         y=[zb],
         mode="markers+text",
-        marker=dict(size=16, color=SIGNAL_COLORS.get(current_row["core_signal_state"], "#2563EB")),
+        marker=dict(size=16, color=S0_SIGNAL_COLORS.get(current_row["core_signal_state"], "#2563EB")),
         text=["●"],
         textposition="middle center",
         hovertemplate=(
@@ -291,7 +291,7 @@ if "ticker" not in merged.columns:
 recent = merged.sort_values("trade_date", ascending=False).head(60)
 
 def highlight_state(val: str) -> str:
-    color = SIGNAL_COLORS.get(val, "#FFFFFF")
+    color = S0_SIGNAL_COLORS.get(val, "#FFFFFF")
     return f"background-color: {color}; color: white;"
 
 # Select only columns that exist (extra defensive)
@@ -313,7 +313,7 @@ existing_cols = [c for c in cols if c in recent.columns]
 styled_signal_table(
     recent[existing_cols],
     signal_col="core_signal_state",
-    color_map=SIGNAL_COLORS,
+    color_map=S0_SIGNAL_COLORS,
 )
 
 st.caption(

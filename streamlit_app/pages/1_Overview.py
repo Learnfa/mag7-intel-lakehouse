@@ -1,9 +1,9 @@
 import streamlit as st
 import pandas as pd
 
-from data.loaders import (
-    load_signal_core_by_date,
-    load_signal_core_dates,
+from utils.data_loaders import (
+    load_s0_core_by_date,
+    load_s0_core_dates,
     load_price_by_date,
 )
 from components.metrics import kpi_row
@@ -11,7 +11,7 @@ from components.tables import styled_signal_table
 from components.banners import production_truth_banner
 from components.freshness import data_freshness_panel
 from components.date_glider import date_glider
-from utils.constants import SIGNAL_COLORS
+from utils.constants import S0_SIGNAL_COLORS
 
 # ---------------------------------------------------------------------
 # Page config
@@ -40,7 +40,7 @@ with st.sidebar:
     st.markdown("## Controls")
 
     with st.spinner("Loading available dates…"):
-        dates_list = load_signal_core_dates()
+        dates_list = load_s0_core_dates()
 
     # HARD sanitize (important)
     if isinstance(dates_list, pd.DataFrame):
@@ -67,7 +67,7 @@ with st.sidebar:
 # Load snapshot for selected data
 # ---------------------------------------------------------------------
 with st.spinner(f"Loading signal snapshot for {asof_date}…"):
-    signal_df = load_signal_core_by_date(asof_date)
+    signal_df = load_s0_core_by_date(asof_date)
 
 if signal_df.empty:
     st.error(f"No signal data found for {asof_date}.")
@@ -183,7 +183,7 @@ table_cols = [c for c in table_cols if c in filtered_df.columns]
 styled_signal_table(
     filtered_df[table_cols].sort_values(["core_signal_state", "ticker"]),
     signal_col="core_signal_state",
-    color_map=SIGNAL_COLORS,
+    color_map=S0_SIGNAL_COLORS,
 )
 
 # ---------------------------------------------------------------------

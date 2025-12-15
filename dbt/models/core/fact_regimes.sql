@@ -15,7 +15,7 @@
 --   - minimal inputs for explainability
 --   - forward returns for outcome analysis
 
--- 1) Base: stock TA + benchmark features
+-- 1) Base: stock TA metrics with forward returns
 WITH base AS (
   SELECT
     trade_date,
@@ -33,7 +33,7 @@ WITH base AS (
     fwd_return_10d,
     fwd_return_20d
 
-  FROM {{ ref('int_mag7_ta_benchmark') }}
+  FROM {{ ref('int_mag7_ta') }}
 ),
 
 -- 2) Percentile regime - Convert position in [min,max] to a 0-1 score, then to 10 buckets
@@ -72,12 +72,13 @@ pct_regime AS (
 zscore_regime AS (
   SELECT
     *,
+    -- NOTE: this is a "global" decile over the full history for each ticker
     NTILE(10) OVER (
       PARTITION BY ticker
       ORDER BY price_zscore_20d
     ) AS zscore_bucket_10,
 
-    -- optional coarse 5-level version
+    -- coarse 5-level version (time-stable + for dashboards)
     CASE
       WHEN price_zscore_20d <= -2 THEN 'deep_oversold'
       WHEN price_zscore_20d <= -1 THEN 'oversold'
@@ -85,6 +86,7 @@ zscore_regime AS (
       WHEN price_zscore_20d <   2 THEN 'overbought'
       ELSE 'extreme_overbought'
     END AS zscore_regime_5
+
   FROM pct_regime
 ),
 
@@ -102,21 +104,34 @@ combined AS (
       WHEN regime_bucket_10 >= 8 AND price_zscore_20d >= 1
         THEN 'overextended'
       ELSE 'neutral'
-    END AS combined_regime_style
+    END AS combined_regime_style,
+
+    -- simple banding: helps analysis + Streamlit legends (does not depend on MA/vol)
+    CASE
+      WHEN regime_bucket_10 BETWEEN 8 AND 10 THEN 'upper_decile'
+      WHEN regime_bucket_10 BETWEEN 1 AND 3  THEN 'lower_decile'
+      WHEN regime_bucket_10 IS NULL          THEN NULL
+      ELSE 'mid'
+    END AS pct_band_3
+
   FROM zscore_regime
 )
 
 SELECT
   trade_date,
   ticker,
+  
   -- regime labels
-  -- Percentile regime
+    -- Percentile regime
   price_pos_200d,
   regime_bucket_10,
+  pct_band_3,
+  
   -- Z-score regime
   price_zscore_20d,
   zscore_bucket_10,
   zscore_regime_5,
+  
   -- Combined regime
   combined_regime_style,
   
@@ -128,8 +143,12 @@ SELECT
   fwd_return_1d,
   fwd_return_5d,
   fwd_return_10d,
-  fwd_return_20d
+  fwd_return_20d,
+
+  -- simple outcome helpers (useful for win-rate stats in marts)
+  (fwd_return_5d  > 0) AS fwd_win_5d,
+  (fwd_return_10d > 0) AS fwd_win_10d,
+  (fwd_return_20d > 0) AS fwd_win_20d
 
 FROM combined
 WHERE regime_bucket_10 IS NOT NULL
-  AND zscore_bucket_10 IS NOT NULL

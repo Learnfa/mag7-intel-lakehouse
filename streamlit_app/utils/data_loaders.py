@@ -1,10 +1,10 @@
 import streamlit as st
 from google.cloud import bigquery
-from data.bq_client import run_query
+from .bq_client import run_query
 
 from config.settings import (
-    TABLE_SIGNAL_CORE,
-    TABLE_MART_PRICE_OVERVIEW,
+    TABLE_S0_CORE_VALUE,
+    TABLE_S1_CORE_MOMREV,
     TABLE_FACT_PRICES,
     TABLE_MART_REGIME_SUMMARY,
     TABLE_MART_RISK,
@@ -36,17 +36,17 @@ def _param_config(params: dict):
     )
 
 # ---------------------------------------------------------------------
-# Core Signal Loaders
+# Core S0 Signal Loaders
 # ---------------------------------------------------------------------
 
 @st.cache_data(ttl=300)
-def load_signal_core_latest():
+def load_s0_core_latest():
     """
     Latest snapshot of canonical core signal (one row per ticker).
     """
     sql = f"""
     SELECT *
-    FROM `{TABLE_SIGNAL_CORE}`
+    FROM `{TABLE_S0_CORE_VALUE}`
     {LATEST_DATE_FILTER}
     ORDER BY ticker
     """
@@ -54,14 +54,14 @@ def load_signal_core_latest():
 
 
 @st.cache_data(ttl=300)
-def load_signal_core_history(ticker: str):
+def load_s0_core_history(ticker: str):
     """
     Full signal history for a single ticker.
     Used by Core Signal & Deep Dive pages.
     """
     sql = f"""
     SELECT *
-    FROM `{TABLE_SIGNAL_CORE}`
+    FROM `{TABLE_S0_CORE_VALUE}`
     WHERE ticker = @ticker
     ORDER BY trade_date
     """
@@ -71,7 +71,7 @@ def load_signal_core_history(ticker: str):
     )
 
 @st.cache_data(ttl=300)
-def load_signal_core_by_date(trade_date):
+def load_s0_core_by_date(trade_date):
     """
     Signal snapshot for ALL tickers on a single trade_date.
     Used by Overview / Radar pages.
@@ -83,7 +83,7 @@ def load_signal_core_by_date(trade_date):
     )
     sql = f"""
     SELECT *
-    FROM `{TABLE_SIGNAL_CORE}`
+    FROM `{TABLE_S0_CORE_VALUE}`
     WHERE trade_date = @trade_date
     ORDER BY ticker
     """
@@ -92,16 +92,15 @@ def load_signal_core_by_date(trade_date):
         job_config=_param_config({"trade_date": trade_date_str}),
     )
 
-
 @st.cache_data(ttl=300)
-def load_signal_core_asof(trade_date: str):
+def load_s0_core_asof(trade_date: str):
     """
     Signal snapshot as-of a specific date.
     Useful for historical inspection.
     """
     sql = f"""
     SELECT *
-    FROM `{TABLE_SIGNAL_CORE}`
+    FROM `{TABLE_S0_CORE_VALUE}`
     WHERE trade_date = @trade_date
     ORDER BY ticker
     """
@@ -111,17 +110,54 @@ def load_signal_core_asof(trade_date: str):
     )
 
 @st.cache_data(ttl=300)
-def load_signal_core_dates():
+def load_s0_core_dates():
     """
     All available trading dates in signal_core.
     Used to drive date gliders / selectors.
     """
     sql = f"""
     SELECT DISTINCT trade_date
-    FROM `{TABLE_SIGNAL_CORE}`
+    FROM `{TABLE_S0_CORE_VALUE}`
     ORDER BY trade_date
     """
     return run_query(sql)["trade_date"].tolist()
+
+
+# ---------------------------------------------------------------------
+# S1: Momentum / Reversion core signal loaders
+# ---------------------------------------------------------------------
+
+@st.cache_data(ttl=300)
+def load_s1_core_latest():
+    """
+    Latest snapshot of S1 MOM / REV / NEU signal
+    (one row per ticker).
+    """
+    sql = f"""
+    SELECT *
+    FROM `{TABLE_S1_CORE_MOMREV}`
+    {LATEST_DATE_FILTER}
+    ORDER BY ticker
+    """
+    return run_query(sql)
+
+@st.cache_data(ttl=300)
+def load_s1_core_history(ticker: str):
+    """
+    Full S1 signal history for a single ticker.
+    Used by S1 shading & deep dive pages.
+    """
+    sql = f"""
+    SELECT *
+    FROM `{TABLE_S1_CORE_MOMREV}`
+    WHERE ticker = @ticker
+    ORDER BY trade_date
+    """
+    return run_query(
+        sql,
+        job_config=_param_config({"ticker": ticker}),
+    )
+
 
 # ---------------------------------------------------------------------
 # Price Overview Loaders
