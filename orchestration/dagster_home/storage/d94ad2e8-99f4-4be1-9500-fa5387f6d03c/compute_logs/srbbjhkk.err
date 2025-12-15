@@ -1,3 +1,0 @@
-2025-12-05 13:00:10 +0000 - dagster - DEBUG - mag7_intel_daily_job - d94ad2e8-99f4-4be1-9500-fa5387f6d03c - 3837 - LOGS_CAPTURED - Started capturing logs in process (pid: 3837).
-2025-12-05 13:00:10 +0000 - dagster - DEBUG - mag7_intel_daily_job - d94ad2e8-99f4-4be1-9500-fa5387f6d03c - 3837 - news_csv - STEP_START - Started execution of step "news_csv".
-2025-12-05 13:00:33 +0000 - dagster - INFO - mag7_intel_daily_job - d94ad2e8-99f4-4be1-9500-fa5387f6d03c - news_csv - Running news extractor for tickers=['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'META', 'TSLA', 'NVDA'], window=1d
