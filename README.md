@@ -290,21 +290,21 @@ mag7-intel/
 │   └── orchestration_tests/
 │
 ├── streamlit_app/                       -> UI for charts and signals
-│   └── core/
+│   └── components/
 │   └── pages/
-│   └── app.py
+│   └── utils/
+│   └── Mag7_Main.py
 │
 └── notebooks/                           -> Jupyter analysis & experiments
 
 Bigquery DW Datasets/
-├── mag7_intel_dim/                      -> Static dim tables (ticker, calendar)
 ├── mag7_intel_raw/                      -> RAW landing tables
 ├── mag7_intel_staging/                  -> cleaned staging
 ├── mag7_intel_intermediate/             -> enriched tables
+├── mag7_intel_core/                     -> fact & dim tables (ticker, calendar)
 ├── mag7_intel_mart/                     -> fact tables, aggregates
 ├── mag7_intel_ml/                       -> features (ATR, vol, returns)
 └── mag7_intel_pred/                     -> model signals/predictions
-
 ```
 
 ---
@@ -336,7 +336,7 @@ Bigquery DW Datasets/
 +-------------------------------------------------------------+
 |                   BIGQUERY DATA WAREHOUSE                   |
 +-------------------------------------------------------------+
-|      RAW  → STAGING → INTERMEDIATE → MART → ML → PRED       |
+|   RAW  → STAGING → CORE → INTERMEDIATE → MART → ML → PRED   |
 +-------------------------------------------------------------+
                                |
                                v
@@ -372,6 +372,7 @@ Bigquery DW Datasets/
 |        - stock_prices_index                                 |
 |        - stock_prices_mag7                                  |
 |        - stock_prices_vix                                   |
+|        - fng                                                |
 |        - news_headlines                                     |
 |        - news_gkg                                           |
 +-------------------------------------------------------------+
@@ -379,36 +380,61 @@ Bigquery DW Datasets/
                                v
 +-------------------------------------------------------------+
 |               TRANSFORM - INTERMEDIATE LAYER                |
-|                  (Enirch, Analytics-Ready)                  |
+|                  (Enirch, adding features)                  |
 +-------------------------------------------------------------+
 |  Processing:                                                |
 |    - dbt intermediate model                                 |
 |    - add Technical Anaylsis (TA) Matrices                   |
 |    - add benchmark to tickers                               |
-|    - news (TBD)                                             |
+|    - aggregate news into daily score                        |
 |                                                             |
 |  Storage:                                                   |
 |    - BigQuery datasets: mag7_intel_intermediate             |
-|        - stock_prices_mag7_ta                               |
-|        - stock_prices_mag7_ta_benchmark                     |
-|        -                                                    |
+|        - mag7_ta                                            |
+|        - mag7_ta_benchmark                                  |
+|        - index_ta                                           |
+|        - gkg_ticket_daily                                   |
+|        - sentiment_ticket_daily                             |
 +-------------------------------------------------------------+
                                |
                                v
-+-------------------------------------------------------------+
-|                    TRANSFORM - MART LAYER                   |
-|                    (star, Analytics-Ready)                  |
-+-------------------------------------------------------------+
-|  Processing:                                                |
-|    - fct                                                    |
-|    - star                                                   |
-|                                                             |
-|  Storage:                                                   |
-|    - BigQuery datasets: mag7_intel_mart                     |
-|    - mart_price_analytics  (returns, vol, drawdowns, etc.)  |
-|    - mart_factor_signals   (simple alphas, ranks)           |
-|    - mart_sentiment_daily  (news + gkg aggregates)          |
-+-------------------------------------------------------------+
++---------------------------------------------------------------+
+|                    TRANSFORM - CORE LAYER                     |
+|                    (stars & facts)                            |
++---------------------------------------------------------------+
+|  Processing:                                                  |
+|    - prep tables for dashboarding                             |
+|    - join and union tables                                    |
+|                                                               |
+|  Storage:                                                     |
+|    - BigQuery datasets: mag7_intel_mart                       |
+|    - dim_ticker            # static tickers for monitoring    |
+|    - dim_calendar          # static calendar for summary      |
+|    - fact_prices           # thin table or price fact (OHLCV) |
+|    - fact_price_features   # rolling, returns, rolling etc.   |
+|    - fact_regimes          # price percentile analytics       |
+|    - fact_macro_sentiment_daily # fng aggregates and labels   |
+|    - fact_ticker_sentiment_daily # news aggregates and labels |
++---------------------------------------------------------------+
+                               |
+                               v
++--------------------------------------------------------------------+
+|                    TRANSFORM - MART LAYER                          |
+|                 (dashboard & analytics-Ready)                      |
++--------------------------------------------------------------------+
+|  Processing:                                                       |
+|    - create tables for streamlit pages                             |
+|    - tables ready for hypothesis, evidence, proof                  |
+|    - summaries                                                     |
+|                                                                    |
+|  Storage:                                                          |
+|    - BigQuery datasets: mag7_intel_mart                            |
+|    - s0_core_value         # signal based on bucket values         |
+|    - s1_core_momrev    # signal based on momentum & mean reversion |
+|    - regime summary    # proof of regime calculation               |
+|    - macro_risk dashboard  #          |
+|    - research_sentiment    #          |
++--------------------------------------------------------------------+
                                |
                                v
 +-------------------------------------------------------------+
@@ -423,7 +449,7 @@ Bigquery DW Datasets/
 ---
 # 📥 4. Data Extraction Scripts
 
-### 3.1 Stock Extractor
+### 4.1 Stock Extractor
 
 stocks_extractor.py support two modes:
 * `--mode backfill` → extract historical data (run once)
@@ -434,7 +460,7 @@ python src/extractors/stock_extractor.py --mode backfill --universe mag7_with_in
 python src/extractors/stocks_extractor.py --mode incremental --universe mag7_with_indexes --include-vix
 ```
 
-### 3.2 Google News Extractor
+### 4.2 Google News Extractor
 
 news_extractor.py supports the following modes:
 * `--window 1d/7d/30d` → extract older news 1d/7d/30d back, note that google limits to 100 records per ticker
@@ -450,7 +476,7 @@ python src/extractors/news_extractor.py --tickers AAPL MSFT --window 7d
 
 # 📥 5. Meltano
 
-### 4.1 meltano install (add tap-csv)
+### 5.1 meltano install (add tap-csv)
 
 **in meltano folder**
 ```
@@ -466,14 +492,14 @@ jobs:
       - tap-csv target-bigquery
 ```
 
-### 4.2 meltano run job 
+### 5.2 meltano run job 
 ```
 meltano run load_csvs  # job name defined in yml
 ```
 
 # 🏗 6. dbt
 
-### 5.1 dbt seeds
+### 6.1 dbt seeds
 Create seed dims for analytical lookup.
 1. Add ticker & calendar csv files in seeds folder
 
@@ -481,68 +507,111 @@ Create seed dims for analytical lookup.
 ```
 seeds:
   mag7_intel:
-    +schema: mag7_intel_dims
+    +schema: mag7_intel_core
     tickers:
       +alias: dim_ticker
     calendar:
       +alias: dim_calendar
 ```
 
-2. Execute & create dims
+2. Execute & create dims in core dataset
 ```
 dbt seed
 ```
 
-### 5.2 staging (data cleansing)
+### 6.2 staging (data cleansing)
 
 1. Create source.yml
 
-2. type cast & dedup for news and stocks, break stocks into mag7, vix and index
-  * create stg_news_headlines.sql
-  * create stg_stock_prices_all.sql
-  * create stg_stock_prices_mag7.sql
-  * create stg_stock_prices_vix.sql
-  * create stg_stock_prices_index.sql
+2. Create sql models to type cast & dedup for news and stocks, break stocks into mag7, vix and index
+  * stg_news_headlines.sql
+  * stg_fng.sql
+  * stg_stock_prices_all.sql
+  from stg_stock_prices_all, split into
+    * stg_stock_prices_mag7.sql
+    * stg_stock_prices_vix.sql
+    * stg_stock_prices_index.sql
+
+3. pull in GDELT & Google Trends from BQ pub data
+  * stg_gdelt_gkg.sql
+
   * run & test
     ```
     dbt run
-    dbt run # or 
-    dbt run -s stg_stock_prices_all  # to run individual module
+    dbt run -s staging               # run all models in staging foler, or 
+    dbt run -s stg_stock_prices_all  # run individual module
     dbt test
     ```
 
-3. pull in GDELT & Google Trends from pub data
+### 6.3 intermediate (data enrichment & features building)
 
-### 5.3 intermediate (data enrichment)
+1. Create sql models to add TAs & matrics to prices needed for downstream analysis
+  * int_mag7_ta.sql
+  * int_mag7_ta_benchmark.sql
+  * int_mag7_index_ta.sql
+  * int_mag7_gkg_ticket_daily.sql
+  * int_mag7_sentiment_ticket_daily.sql
 
-4. ?
-### 5.4 core (atomic & reusable facts & dims)
+  * run & test
+    ```
+    dbt run
+    dbt run -s intermediate    # run all models in intermediate folder, or 
+    dbt run -s int_mag7_ta     # run individual module
+    dbt test
+    ```
 
-### 5.5 mart (analytical summaries & aggregation)
+### 6.4 core (atomic & reusable facts & dims)
+  * fact_prices.sql
+  * fact_price_features.sql
+  * fact_regimes.sql
+  * fact_macro_sentiment_daily.sql
+  * fact_ticket_sentiment_daily.sql
+
+### 6.5 mart (analytical summaries & aggregation)
+  * mart_ticker_overview.sql
+  * mart_s0_core_value.sql
+  * mart_s1_core_momrev.sql
+  * mart_macro_risk_dashboard.sql
 
 
 # 🤖 7. Dagster Orchestration
 
-### 6.1 Create dagster scaffold
+### 7.1 Create dagster scaffold
 ```
 dagster project scaffold --name orchestration
 
 ```
 
-### 6.2 create assets.py
+### 7.2 create assets.py
 Creat asset.py with following assets:
+
 1. news extractor
+```
   csv_path = run_news_extractor(tickers, window)
+```
+
 2. stock price extractor
+```
   csv_path = extract_to_csv(mode, universe, include_vix, tickers)
+```
+
 3. Meltano load (csv → BigQuery)
+```
   subprocess.run(
         ["meltano", "run", "load_csvs"],
         cwd, check, capture_output, text  )
-4. DBT Transforms (STAGING)
-  subprocess.run(
+```
+
+4. DBT Transforms (STAGING-INTERMEDIATE-CORE-MART)
+```
+    dbt_cmd = [ "dbt", "run", "-s", "staging.*" ]
+    dbt_cmd = [ "dbt", "run", "-s", "intermediate.*" ]
+    dbt_cmd = [ "dbt", "run", "-s", "core.*" ]
+    dbt_cmd = [ "dbt", "run", "-s", "mart.*" ]
+    subprocess.run(
         dbt_cmd, cwd=DBT_DIR, check=False,
         capture_output=True, text=True, )
+```
 
 ### 6.3 Configure definitions.py
 
@@ -565,10 +634,10 @@ dagster dev
 # 🌐 8. Running Streamlit Dashboard
 
 ```bash
-streamlit run dashboards/streamlit/app.py
+streamlit run dashboards/streamlit/Mag7_Main.py
 ```
 
-Streamlit queries:
+Streamlit pages:
 
 * `mart.*`
 * `core.*`
