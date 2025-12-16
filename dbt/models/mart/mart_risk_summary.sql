@@ -1,7 +1,7 @@
 {{ config(
     materialized = 'table',
     schema       = 'mart',
-    alias        = 'risk_dashboard',
+    alias        = 'risk_summary',
     tags         = ['mart', 'risk', 'overview']
 ) }}
 

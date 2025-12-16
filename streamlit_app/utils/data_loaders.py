@@ -8,7 +8,8 @@ from config.settings import (
     TABLE_FACT_PRICES,
     TABLE_MART_REGIME_SUMMARY,
     TABLE_MART_RISK,
-    TABLE_MART_MACRO,
+    TABLE_MART_MACRO_RISK_TS,
+    TABLE_MART_MARKET_SENTIMENT_TS,
 )
 
 
@@ -34,6 +35,33 @@ def _param_config(params: dict):
             for k, v in params.items()
         ]
     )
+
+# ---------------------------------------------------------------------
+# Market Sentiment Loaders
+# ---------------------------------------------------------------------
+
+@st.cache_data(ttl=300)
+def load_market_sentiment_latest():
+    """
+    Latest snapshot for market & sentiment page (ticker selector + as-of).
+    """
+    sql = f"""
+    SELECT trade_date, ticker
+    FROM `{TABLE_MART_MARKET_SENTIMENT_TS}`
+    """
+    return run_query(sql)
+
+@st.cache_data(ttl=300)
+def load_market_sentiment_latest():
+    """
+    Latest snapshot for market & sentiment page (ticker selector + as-of).
+    """
+    sql = f"""
+    SELECT trade_date, ticker
+    FROM `{TABLE_MART_MARKET_SENTIMENT_TS}`
+    """
+    return run_query(sql)
+
 
 # ---------------------------------------------------------------------
 # Core S0 Signal Loaders
@@ -265,7 +293,7 @@ def load_macro_risk_latest():
     """
     sql = f"""
     SELECT *
-    FROM `{TABLE_MART_MACRO}`
+    FROM `{TABLE_MART_MACRO_RISK_TS}`
     QUALIFY trade_date = MAX(trade_date) OVER ()
     ORDER BY trade_date
     """
@@ -278,7 +306,7 @@ def load_macro_risk_history():
     """
     sql = f"""
     SELECT *
-    FROM `{TABLE_MART_MACRO}`
+    FROM `{TABLE_MART_MACRO_RISK_TS}`
     ORDER BY trade_date
     """
     return run_query(sql)

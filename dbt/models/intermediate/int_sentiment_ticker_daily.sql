@@ -1,12 +1,10 @@
 {{ config(
-    materialized = 'table',
+    materialized = 'incremental',
     schema       = 'intermediate',
     alias        = 'sentiment_ticker_daily',
-    partition_by = {
-      "field": "trade_date",
-      "data_type": "date"
-    },
+    partition_by = { "field": "trade_date", "data_type": "date" },
     cluster_by   = ['ticker'],
+    incremental_strategy = 'insert_overwrite',
     tags         = ['intermediate', 'news', 'sentiment', 'ticker']
 ) }}
 
@@ -18,6 +16,9 @@ WITH base AS (
         sentiment_label
     FROM {{ ref('stg_news_headlines') }}
     WHERE ticker IS NOT NULL
+    {% if is_incremental() %}
+      AND CAST(news_ts AS DATE) >= DATE_SUB(CURRENT_DATE(), INTERVAL 14 DAY)
+    {% endif %}
 ),
 
 agg AS (

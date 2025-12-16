@@ -1,5 +1,6 @@
 {{ config(
-    materialized = 'table',
+    materialized         = 'incremental',
+    incremental_strategy = 'insert_overwrite',
     schema       = 'core',
     alias        = 'fact_price_features',
     partition_by = {
@@ -65,6 +66,11 @@ WITH mag7 AS (
     ndxe_relative_strength_20d,
     ndxe_price_ratio
   FROM {{ ref('int_mag7_ta_benchmark') }}
+  WHERE trade_date IS NOT NULL
+  {% if is_incremental() %}
+    -- small window is fine for a thin fact
+    AND trade_date >= DATE_SUB(CURRENT_DATE(), INTERVAL 30 DAY)
+  {% endif %}
 ),
 
 -- 2) Index TA prices (^NDX, ^NDXE, etc.), benchmark-relative fields are NULL
