@@ -52,13 +52,22 @@ def load_market_sentiment_latest():
     return run_query(sql)
 
 @st.cache_data(ttl=300)
-def load_market_sentiment_latest():
-    """
-    Latest snapshot for market & sentiment page (ticker selector + as-of).
-    """
+def load_market_sentiment_history(
+    ticker: str,
+    start_date: str | None = None,
+    end_date: str | None = None,
+):
+    where = [f"ticker = '{ticker}'"]
+    if start_date:
+        where.append(f"trade_date >= DATE('{start_date}')")
+    if end_date:
+        where.append(f"trade_date <= DATE('{end_date}')")
+
     sql = f"""
-    SELECT trade_date, ticker
+    SELECT *
     FROM `{TABLE_MART_MARKET_SENTIMENT_TS}`
+    WHERE {" AND ".join(where)}
+    ORDER BY trade_date
     """
     return run_query(sql)
 

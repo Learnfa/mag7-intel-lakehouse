@@ -1,0 +1,60 @@
+###############################################################################
+# ENVIRONMENT TEMPLATE FOR MAG7-INTEL
+# Copy this file to `.env` and update values for your local environment.
+###############################################################################
+
+# ============================================================================
+# ENV FOR DAGSTER DOCKER
+# ============================================================================
+
+# GCP key location
+# GCP_KEY_PATH_HOST=/home/shpang/devs/ntu/projects/mag7_intel/.keys
+# GCP_KEY_PATH_HOST=/app/.keys
+
+# Google Cloud project ID
+# GCP_PROJECT_ID=pizza-skxw
+GCP_PROJECT_ID=robotic-weft-480502-c2
+
+# Path to your local GCP Service Account JSON key file (DO NOT COMMIT REAL KEY)
+# Example: /Users/yourname/keys/market-intel-sa.json
+GOOGLE_APPLICATION_CREDENTIALS=/home/shpang/.key/robotic-weft-480502-c2.json
+# GOOGLE_APPLICATION_CREDENTIALS=/app/.keys/robotic-weft-480502-c2.json        # path in docker
+
+# Default region for BigQuery, GCS, Cloud Run
+GCP_REGION=US
+
+
+# ============================================================================
+# BIGQUERY DATASETS (Developers override RAW/STAGING during local dev)
+# ============================================================================
+# Shared datasets used by the main Dagger/CI pipeline
+BQ_DATASET_PRIX=mag7_intel      # prefix for all datasets
+BQ_DATASET_RAW=mag7_intel_raw
+BQ_DATASET_STAGING=mag7_intel_staging
+BQ_DATASET_INTERMEDIATE=mag7_intel_intermediate
+BQ_DATASET_CORE=mag7_intel_core
+BQ_DATASET_MART=mag7_intel_mart
+
+# ML phase
+# BQ_DATASET_ML=mag7_intel_ml
+# BQ_DATASET_PRED=mag7_intel_pred
+
+
+# ============================================================================
+# EXTRACTiON SETTINGS
+# ============================================================================
+# Total years for historical backfill
+BACKFILL_YEARS=5
+
+# Optional: override the start date for backfill (YYYY-MM-DD)
+# If unset, START_DATE = TODAY - BACKFILL_YEARS
+START_DATE=2020-01-01
+
+# Magnificent 7 default tickers (comma-separated)
+TICKERS=AAPL,MSFT,GOOGL,AMZN,META,TSLA,NVDA
+
+# NASDAQ index tickers we want to track
+INDICES=^IXIC,^NDX,^NDXE
+
+# extracted data output directory (tap for meltano)
+OUTPUT_DIR=./data

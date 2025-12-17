@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
 
+from utils.content_loaders import load_markdown
 from utils.data_loaders import load_s0_core_latest, load_s0_core_history
 from components.banners import production_truth_banner
 from components.metrics import kpi_row
@@ -85,14 +86,15 @@ kpi_row(
 
 st.divider()
 
-with st.expander("What does this page show?", expanded=False):
-    st.markdown(
-        """
-- This page shows the **canonical** (validated) `signal_core` state over time.
-- It does **not** show strategy performance, forward returns, or equity curves.
-- Use **Research** pages for validation and outcome summaries.
-        """.strip()
-    )
+
+# ---------------------------------------------------------------------
+# Explanation (loaded from file)
+# ---------------------------------------------------------------------
+load_markdown(
+    "contents/s0_bucket_value.md",
+    expanded=False,
+    title="What does this page show?"
+)
 
 # ---------------------------------------------------------------------
 # Plotly helpers
