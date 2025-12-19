@@ -1,5 +1,6 @@
 {{ config(
-    materialized = 'table',
+    materialized         = 'incremental',
+    incremental_strategy = 'insert_overwrite',
     schema       = 'core',
     alias        = 'fact_prices',
     partition_by = { "field": "trade_date", "data_type": "date" },
@@ -22,7 +23,12 @@ WITH base AS (
     adj_close,
     volume,
     return_1d
-  FROM {{ ref('int_mag7_ta') }}  -- mag7 only
+  FROM {{ ref('int_mag7_ta') }}
+  WHERE trade_date IS NOT NULL
+  {% if is_incremental() %}
+    -- small window is fine for a thin fact
+    AND trade_date >= DATE_SUB(CURRENT_DATE(), INTERVAL 30 DAY)
+  {% endif %}
 ),
 
 filtered AS (

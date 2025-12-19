@@ -1,5 +1,6 @@
 {{ config(
-    materialized = 'table',
+    materialized         = 'incremental',
+    incremental_strategy = 'insert_overwrite',
     schema       = 'core',
     alias        = 'fact_regimes',
     partition_by = {
@@ -34,6 +35,12 @@ WITH base AS (
     fwd_return_20d
 
   FROM {{ ref('int_mag7_ta') }}
+  WHERE trade_date IS NOT NULL
+  {% if is_incremental() %}
+    -- small window is fine for a thin fact
+    AND trade_date >= DATE_SUB(CURRENT_DATE(), INTERVAL 30 DAY)
+  {% endif %}
+
 ),
 
 -- 2) Percentile regime - Convert position in [min,max] to a 0-1 score, then to 10 buckets

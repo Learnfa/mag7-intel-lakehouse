@@ -1,7 +1,7 @@
 {{ config(
     materialized = 'table',
     schema       = 'mart',
-    alias        = 'ticker_overview',
+    alias        = 'research_ticker_profile',
     tags         = ['mart', 'ticker', 'overview']
 ) }}
 

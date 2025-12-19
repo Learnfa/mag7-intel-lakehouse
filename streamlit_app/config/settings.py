@@ -49,12 +49,12 @@ TABLE_S0_RESEARCH_EVENTS   = f"{GCP_PROJECT_ID}.{BQ_DATASET_MART}.s0_research_ev
 TABLE_S0_RESEARCH_PERF     = f"{GCP_PROJECT_ID}.{BQ_DATASET_MART}.s0_research_performance"
 TABLE_S1_CORE_MOMREV       = f"{GCP_PROJECT_ID}.{BQ_DATASET_MART}.s1_core_momrev"
 
-TABLE_MART_RISK            = f"{GCP_PROJECT_ID}.{BQ_DATASET_MART}.risk_dashboard"
-TABLE_MART_MACRO           = f"{GCP_PROJECT_ID}.{BQ_DATASET_MART}.macro_risk_dashboard"
-TABLE_MART_REGIME_SUMMARY  = f"{GCP_PROJECT_ID}.{BQ_DATASET_MART}.regime_summary"
-TABLE_MART_TICKER_OVERVIEW = f"{GCP_PROJECT_ID}.{BQ_DATASET_MART}.ticker_overview"
-TABLE_MART_PRICE_OVERVIEW  = f"{GCP_PROJECT_ID}.{BQ_DATASET_MART}.price_overview"
-
+TABLE_MART_RISK                = f"{GCP_PROJECT_ID}.{BQ_DATASET_MART}.risk_summary"
+TABLE_MART_MACRO_RISK_TS       = f"{GCP_PROJECT_ID}.{BQ_DATASET_MART}.macro_risk_ts"
+TABLE_MART_REGIME_SUMMARY      = f"{GCP_PROJECT_ID}.{BQ_DATASET_MART}.regime_summary"
+TABLE_MART_TICKER_OVERVIEW     = f"{GCP_PROJECT_ID}.{BQ_DATASET_MART}.research_ticker_profile"
+TABLE_MART_PRICE_SUMMARY       = f"{GCP_PROJECT_ID}.{BQ_DATASET_MART}.price_summary"
+TABLE_MART_MARKET_SENTIMENT_TS = f"{GCP_PROJECT_ID}.{BQ_DATASET_MART}.market_sentiment_ts"
 # ---------------------------------------------------------------------
 # App Defaults
 # ---------------------------------------------------------------------

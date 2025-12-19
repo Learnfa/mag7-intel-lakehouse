@@ -1,7 +1,7 @@
 {{ config(
     materialized = 'table',
     schema       = 'mart',
-    alias        = 'price_overview',
+    alias        = 'price_summary',
     tags         = ['mart', 'price', 'overview']
 ) }}
 

@@ -27,12 +27,10 @@ st.info(
 st.markdown("""
 ### What you can explore
 - **Overview** – latest core signal snapshot across tickers
-- **Signal by Bucket Values** – signal history, persistence, and ranking
+- **Stock & Macro** – a snapshot of tickers with macro overlays and indicator correlations
 - **Signal by Momentum/Reversion** – classifies each trading day into one of three actionable states
+- **Signal by Bucket Values** – signal history, persistence, and ranking
 - **Ticker Deep Dive** – price context + regime corridor + signal locator
 - **Regimes** – distribution and explanatory regime behaviour
 - **Risk Context** – volatility/drawdown + macro risk overlays (no gating)
-- **Research & Validation** – early/late robustness and forward-return summaries
-- **Research & Sentiment** – early/late robustness and forward-return summaries with Sentiment
-- **Research Playground** – exploratory visuals (contains look-ahead bias)
 """)

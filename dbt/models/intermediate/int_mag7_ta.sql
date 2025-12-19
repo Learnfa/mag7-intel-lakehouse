@@ -1,12 +1,10 @@
-{{ config( 
-    materialized = 'table',
+{{ config(
+    materialized = 'incremental',
     schema = 'intermediate',
     alias = 'mag7_ta',
-    partition_by = {
-      "field": "trade_date",
-      "data_type": "date"
-    },
+    partition_by = { "field": "trade_date", "data_type": "date" },
     cluster_by = ["ticker"],
+    incremental_strategy = 'insert_overwrite',
     tags = ["intermediate", "ta", "mag7"]
 ) }}
 
@@ -22,6 +20,11 @@ WITH prices AS (
     adj_close,
     volume
   FROM {{ ref('stg_mag7') }}
+  WHERE trade_date IS NOT NULL
+  {% if is_incremental() %}
+    -- recompute enough history for 252d lookbacks + enough future for fwd returns
+    AND trade_date >= DATE_SUB(CURRENT_DATE(), INTERVAL 450 DAY)
+  {% endif %}
 ),
 
 -- 2. Add lags needed for returns & ATR calc
